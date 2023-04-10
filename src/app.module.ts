@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientModule } from './clients/client.module';
 import { EnvConfig as configuration } from './config/env.config';
 import { AccountModule } from './accounts/account.module';
+import { TransactionsModule } from './transactions/transactions.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -13,6 +14,7 @@ import { AccountModule } from './accounts/account.module';
     }),
     ClientModule,
     AccountModule,
+    TransactionsModule,
   ],
   controllers: [],
   providers: [],
