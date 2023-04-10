@@ -10,6 +10,7 @@ import {
 import { BlockSeizureService } from './block-seizures.service';
 import { CreateBlockFundsDto } from './dto/create-block-funds.dto';
 import { CreateSeizureFundsDto } from './dto/create-siezure-funds.dto';
+import { CreateAccountChangeStateDto } from './dto/create-account-change-state.dto';
 
 @Controller('block-seizures')
 export class BlockSeizuresController {
@@ -29,6 +30,17 @@ export class BlockSeizuresController {
     @Body() createBlockSeizureDto: CreateSeizureFundsDto,
   ) {
     return this.blockSeizureService.seizureFunds(id, createBlockSeizureDto);
+  }
+
+  @Post('change-state')
+  changeState(
+    @Param('depositAccountId') id: string,
+    @Body() createBlockSeizureDto: CreateAccountChangeStateDto,
+  ) {
+    return this.blockSeizureService.accountChangeState(
+      id,
+      createBlockSeizureDto,
+    );
   }
 
   @Get()

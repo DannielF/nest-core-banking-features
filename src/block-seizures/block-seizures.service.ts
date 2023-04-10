@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateBlockFundsDto } from './dto/create-block-funds.dto';
 import { HeaderConfig } from 'src/config/header.config';
 import { CreateSeizureFundsDto } from './dto/create-siezure-funds.dto';
+import { CreateAccountChangeStateDto } from './dto/create-account-change-state.dto';
 
 @Injectable()
 export class BlockSeizureService {
@@ -22,6 +23,21 @@ export class BlockSeizureService {
   async seizureFunds(id: string, createBlockSeizureDto: CreateSeizureFundsDto) {
     const response = await fetch(
       `${this.headerService.url}/deposits/${id}/seizure-transactions`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
+        body: JSON.stringify(createBlockSeizureDto),
+      },
+    );
+    return await response.json();
+  }
+
+  async accountChangeState(
+    id: string,
+    createBlockSeizureDto: CreateAccountChangeStateDto,
+  ) {
+    const response = await fetch(
+      `${this.headerService.url}/deposits/${id}:changeState`,
       {
         method: 'POST',
         headers: this.headerService.headers,
