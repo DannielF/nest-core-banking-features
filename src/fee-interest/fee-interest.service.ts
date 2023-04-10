@@ -29,9 +29,14 @@ export class FeeInterestService {
     paginationDetails?,
     detailsLevel?,
   ) {
-    const queryParams = `?offset=${offset}&limit=${limit}&paginationDetails=${paginationDetails}&detailsLevel=${detailsLevel}`;
+    const queryParams = new URLSearchParams({
+      offset: offset,
+      limit: limit,
+      paginationDetails: paginationDetails,
+      detailsLevel: detailsLevel,
+    }).toString();
     const response = await fetch(
-      `${this.headerService.url}/accounting/interestaccrual:search`,
+      `${this.headerService.url}/accounting/interestaccrual:search?${queryParams}`,
       {
         method: 'POST',
         headers: this.headerService.headers,
