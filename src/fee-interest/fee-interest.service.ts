@@ -35,11 +35,12 @@ export class FeeInterestService {
       paginationDetails: paginationDetails,
       detailsLevel: detailsLevel,
     }).toString();
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
       `${this.headerService.url}/accounting/interestaccrual:search?${queryParams}`,
       {
         method: 'POST',
-        headers: this.headerService.headers,
+        headers: { Accept, Authorization, 'Content-type': 'application/json' },
         body: JSON.stringify(createFeeInterestDto),
       },
     );
