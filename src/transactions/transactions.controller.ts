@@ -17,14 +17,14 @@ export class TransactionsController {
 
   @Post('deposit')
   deposit(
-    @Param('idAccount') id: string,
+    @Param('depositAccountId') id: string,
     @Body() createTransactionDto: CreateDepositDto,
   ) {
     return this.transactionsService.makeDeposit(id, createTransactionDto);
   }
   @Post('withdraw')
   withdraw(
-    @Param('idAccount') id: string,
+    @Param('depositAccountId') id: string,
     @Body() createTransactionDto: CreateWithdrawDto,
   ) {
     return this.transactionsService.makeWithdraw(id, createTransactionDto);

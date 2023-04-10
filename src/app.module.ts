@@ -4,6 +4,7 @@ import { ClientModule } from './clients/client.module';
 import { EnvConfig as configuration } from './config/env.config';
 import { AccountModule } from './accounts/account.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { BlockSeizuresModule } from './block-seizures/block-seizures.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,6 +16,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     ClientModule,
     AccountModule,
     TransactionsModule,
+    BlockSeizuresModule,
   ],
   controllers: [],
   providers: [],
