@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ClientModule } from './client/client.module';
+import { ClientModule } from './clients/client.module';
 import { EnvConfig as configuration } from './config/env.config';
-import { AccountModule } from './account/account.module';
+import { AccountModule } from './accounts/account.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
