@@ -12,16 +12,16 @@ import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 
-@Controller('account')
+@Controller('accounts')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Post('deposits')
+  @Post('/deposits')
   deposit(@Body() createAccountDto: CreateAccountDto) {
     return this.accountService.createDeposit(createAccountDto);
   }
 
-  @Get('getEcoded')
+  @Get('/get-ecoded/:Idproducto')
   depositProducts(
     @Param('Idproducto') id: string,
     @Query('offset') offset?: string,
@@ -38,7 +38,7 @@ export class AccountController {
     );
   }
 
-  @Get(':id')
+  @Get('/:id')
   findOne(@Param('id') id: string) {
     return this.accountService.findOne(+id);
   }

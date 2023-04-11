@@ -16,7 +16,7 @@ import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
 export class FeeInterestController {
   constructor(private readonly feeInterestService: FeeInterestService) {}
 
-  @Post('deposits')
+  @Post('deposits/:depositAccountId')
   depositInterest(
     @Param('depositAccountId') id: string,
     @Body() createFeeInterestDto: CreateApplyInterest,

@@ -17,7 +17,7 @@ import { SearchFilterDTO } from './dto/create-search-filter.dto';
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
-  @Post('deposit')
+  @Post('/deposit/:depositAccountId')
   deposit(
     @Param('depositAccountId') id: string,
     @Body() createTransactionDto: CreateDepositDto,
@@ -25,7 +25,7 @@ export class TransactionsController {
     return this.transactionsService.makeDeposit(id, createTransactionDto);
   }
 
-  @Post('withdraw')
+  @Post('/withdraw/:depositAccountId')
   withdraw(
     @Param('depositAccountId') id: string,
     @Body() createTransactionDto: CreateWithdrawDto,
@@ -33,12 +33,12 @@ export class TransactionsController {
     return this.transactionsService.makeWithdraw(id, createTransactionDto);
   }
 
-  @Post('search')
+  @Post('/search-deposits')
   depositSearch(@Body() createTransactionDto: SearchFilterDTO) {
     return this.transactionsService.searchDeposits(createTransactionDto);
   }
 
-  @Post('all')
+  @Post('/all')
   allTransactions(
     @Body() createTransactionDto: SearchFilterDTO,
     @Query('offset') offset?: string,
@@ -55,7 +55,7 @@ export class TransactionsController {
     );
   }
 
-  @Get()
+  @Get('/all/:depositAccountId')
   allTransactionClient(@Param('depositAccountId') id: string) {
     return this.transactionsService.transactionsClient(id);
   }

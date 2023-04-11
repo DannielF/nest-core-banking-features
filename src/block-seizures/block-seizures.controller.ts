@@ -16,7 +16,7 @@ import { CreateAccountChangeStateDto } from './dto/create-account-change-state.d
 export class BlockSeizuresController {
   constructor(private readonly blockSeizureService: BlockSeizureService) {}
 
-  @Post('blocks')
+  @Post('/blocks/:depositAccountId')
   blocks(
     @Param('depositAccountId') id: string,
     @Body() createBlockSeizureDto: CreateBlockFundsDto,
@@ -24,7 +24,7 @@ export class BlockSeizuresController {
     return this.blockSeizureService.blockFunds(id, createBlockSeizureDto);
   }
 
-  @Post('seizures')
+  @Post('/seizures/:depositAccountId')
   seizure(
     @Param('depositAccountId') id: string,
     @Body() createBlockSeizureDto: CreateSeizureFundsDto,
@@ -32,7 +32,7 @@ export class BlockSeizuresController {
     return this.blockSeizureService.seizureFunds(id, createBlockSeizureDto);
   }
 
-  @Post('change-state')
+  @Post('/change-state/:depositAccountId')
   changeState(
     @Param('depositAccountId') id: string,
     @Body() createBlockSeizureDto: CreateAccountChangeStateDto,
@@ -43,7 +43,7 @@ export class BlockSeizuresController {
     );
   }
 
-  @Get('allBlocks')
+  @Get('/all-blocks/:depositAccountId')
   getAllBlocksFunds(@Param('depositAccountId') id: string) {
     return this.blockSeizureService.AllBlockFunds(id);
   }
