@@ -47,8 +47,16 @@ export class BlockSeizureService {
     return await response.json();
   }
 
-  findAll() {
-    return `This action returns all blockSeizures`;
+  async AllBlockFunds(id: string) {
+    const { Accept, Authorization } = this.headerService.headers;
+    const response = await fetch(
+      `${this.headerService.url}/deposits/${id}/blocks`,
+      {
+        method: 'GET',
+        headers: { Accept, Authorization },
+      },
+    );
+    return await response.json();
   }
 
   findOne(id: number) {

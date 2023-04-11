@@ -43,9 +43,9 @@ export class BlockSeizuresController {
     );
   }
 
-  @Get()
-  findAll() {
-    return this.blockSeizureService.findAll();
+  @Get('allBlocks')
+  getAllBlocksFunds(@Param('depositAccountId') id: string) {
+    return this.blockSeizureService.AllBlockFunds(id);
   }
 
   @Get(':id')
