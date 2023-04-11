@@ -10,6 +10,7 @@ import {
 import { TransactionsService } from './transactions.service';
 import { CreateDepositDto } from './dto/create-deposit.dto';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
+import { SearchFilterDTO } from './dto/create-search-filter.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -22,12 +23,18 @@ export class TransactionsController {
   ) {
     return this.transactionsService.makeDeposit(id, createTransactionDto);
   }
+
   @Post('withdraw')
   withdraw(
     @Param('depositAccountId') id: string,
     @Body() createTransactionDto: CreateWithdrawDto,
   ) {
     return this.transactionsService.makeWithdraw(id, createTransactionDto);
+  }
+
+  @Post('search')
+  depositSearch(@Body() createTransactionDto: SearchFilterDTO) {
+    return this.transactionsService.searchDeposits(createTransactionDto);
   }
 
   @Get()

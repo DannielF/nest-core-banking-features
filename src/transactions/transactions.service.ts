@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateDepositDto } from './dto/create-deposit.dto';
 import { HeaderConfig } from 'src/config/header.config';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
+import { SearchFilterDTO } from './dto/create-search-filter.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -40,6 +41,16 @@ export class TransactionsService {
         headers: { Accept, Authorization },
       },
     );
+    return await response.json();
+  }
+
+  async searchDeposits(createTransactionDto: SearchFilterDTO) {
+    const { Accept, Authorization } = this.headerService.headers;
+    const response = await fetch(`${this.headerService.url}/deposits/search`, {
+      method: 'POST',
+      headers: { Accept, Authorization, 'Content-Type': 'application/json' },
+      body: JSON.stringify(createTransactionDto),
+    });
     return await response.json();
   }
 
