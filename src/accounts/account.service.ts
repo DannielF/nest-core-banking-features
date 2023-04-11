@@ -7,7 +7,7 @@ import { HeaderConfig } from 'src/config/header.config';
 export class AccountService {
   constructor(private readonly headerService: HeaderConfig) {}
 
-  async create(createAccountDto: CreateAccountDto) {
+  async createDeposit(createAccountDto: CreateAccountDto) {
     const response = await fetch(`${this.headerService.url}/deposits`, {
       method: 'POST',
       headers: this.headerService.headers,
@@ -16,8 +16,28 @@ export class AccountService {
     return await response.json();
   }
 
-  findAll() {
-    return `This action returns all account`;
+  async getEcodedProduct(
+    id: string,
+    offset?,
+    limit?,
+    paginationDetails?,
+    detailsLevel?,
+  ) {
+    const queryParams = new URLSearchParams({
+      offset: offset,
+      limit: limit,
+      paginationDetails: paginationDetails,
+      detailsLevel: detailsLevel,
+    }).toString();
+    const { Accept, Authorization } = this.headerService.headers;
+    const response = await fetch(
+      `${this.headerService.url}/depositproducts/${id}?${queryParams}`,
+      {
+        method: 'GET',
+        headers: { Accept, Authorization },
+      },
+    );
+    return await response.json();
   }
 
   findOne(id: number) {

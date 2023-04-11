@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
@@ -15,14 +16,26 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Post()
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountService.create(createAccountDto);
+  @Post('deposits')
+  deposit(@Body() createAccountDto: CreateAccountDto) {
+    return this.accountService.createDeposit(createAccountDto);
   }
 
-  @Get()
-  findAll() {
-    return this.accountService.findAll();
+  @Get('getEcoded')
+  depositProducts(
+    @Param('Idproducto') id: string,
+    @Query('offset') offset?: string,
+    @Query('limit') limit?: string,
+    @Query('paginationDetails') paginationDetails?: string,
+    @Query('detailsLevel') detailsLevel?: string,
+  ) {
+    return this.accountService.getEcodedProduct(
+      id,
+      offset,
+      limit,
+      paginationDetails,
+      detailsLevel,
+    );
   }
 
   @Get(':id')
