@@ -13,7 +13,7 @@ export class BlockSeizureService {
       `${this.headerService.url}/deposits/${id}/blocks`,
       {
         method: 'POST',
-        headers: this.headerService.headers,
+        headers: this.headerService.getHeaders(),
         body: JSON.stringify(createBlockSeizureDto),
       },
     );
@@ -25,7 +25,7 @@ export class BlockSeizureService {
       `${this.headerService.url}/deposits/${id}/seizure-transactions`,
       {
         method: 'POST',
-        headers: this.headerService.headers,
+        headers: this.headerService.getHeaders(),
         body: JSON.stringify(createBlockSeizureDto),
       },
     );
@@ -40,7 +40,7 @@ export class BlockSeizureService {
       `${this.headerService.url}/deposits/${id}:changeState`,
       {
         method: 'POST',
-        headers: this.headerService.headers,
+        headers: this.headerService.getHeaders(),
         body: JSON.stringify(createBlockSeizureDto),
       },
     );
@@ -48,7 +48,7 @@ export class BlockSeizureService {
   }
 
   async AllBlockFunds(id: string) {
-    const { Accept, Authorization } = this.headerService.headers;
+    const { Accept, Authorization } = this.headerService.getHeaders();
     const response = await fetch(
       `${this.headerService.url}/deposits/${id}/blocks`,
       {

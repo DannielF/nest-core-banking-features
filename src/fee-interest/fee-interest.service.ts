@@ -15,7 +15,7 @@ export class FeeInterestService {
       `${this.headerService.url}/deposits/${id}:applyInterest`,
       {
         method: 'POST',
-        headers: this.headerService.headers,
+        headers: this.headerService.getHeaders(),
         body: JSON.stringify(createFeeInterestDto),
       },
     );
@@ -35,7 +35,7 @@ export class FeeInterestService {
       paginationDetails: paginationDetails,
       detailsLevel: detailsLevel,
     }).toString();
-    const { Accept, Authorization } = this.headerService.headers;
+    const { Accept, Authorization } = this.headerService.getHeaders();
     const response = await fetch(
       `${this.headerService.url}/accounting/interestaccrual:search?${queryParams}`,
       {

@@ -13,7 +13,7 @@ export class TransactionsService {
       `${this.headerService.url}/deposits/${id}/deposit-transactions`,
       {
         method: 'POST',
-        headers: this.headerService.headers,
+        headers: this.headerService.getHeaders(),
         body: JSON.stringify(createTransactionDto),
       },
     );
@@ -25,7 +25,7 @@ export class TransactionsService {
       `${this.headerService.url}/deposits/${id}/withdrawal-transactions`,
       {
         method: 'POST',
-        headers: this.headerService.headers,
+        headers: this.headerService.getHeaders(),
         body: JSON.stringify(createTransactionDto),
       },
     );
@@ -33,7 +33,7 @@ export class TransactionsService {
   }
 
   async transactionsClient(id: string) {
-    const { Accept, Authorization } = this.headerService.headers;
+    const { Accept, Authorization } = this.headerService.getHeaders();
     const response = await fetch(
       `${this.headerService.url}/deposits/${id}/transactions`,
       {
@@ -45,7 +45,7 @@ export class TransactionsService {
   }
 
   async searchDeposits(createTransactionDto: SearchFilterDTO) {
-    const { Accept, Authorization } = this.headerService.headers;
+    const { Accept, Authorization } = this.headerService.getHeaders();
     const response = await fetch(`${this.headerService.url}/deposits/search`, {
       method: 'POST',
       headers: { Accept, Authorization, 'Content-Type': 'application/json' },
@@ -68,7 +68,7 @@ export class TransactionsService {
       detailsLevel,
     }).toString();
 
-    const { Accept, Authorization } = this.headerService.headers;
+    const { Accept, Authorization } = this.headerService.getHeaders();
     const response = await fetch(
       `${this.headerService.url}/deposits/transactions:search?${queryParams}`,
       {

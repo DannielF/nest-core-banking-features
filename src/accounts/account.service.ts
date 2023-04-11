@@ -10,7 +10,7 @@ export class AccountService {
   async createDeposit(createAccountDto: CreateAccountDto) {
     const response = await fetch(`${this.headerService.url}/deposits`, {
       method: 'POST',
-      headers: this.headerService.headers,
+      headers: this.headerService.getHeaders(),
       body: JSON.stringify(createAccountDto),
     });
     return await response.json();
@@ -29,7 +29,7 @@ export class AccountService {
       paginationDetails: paginationDetails,
       detailsLevel: detailsLevel,
     }).toString();
-    const { Accept, Authorization } = this.headerService.headers;
+    const { Accept, Authorization } = this.headerService.getHeaders();
     const response = await fetch(
       `${this.headerService.url}/depositproducts/${id}?${queryParams}`,
       {

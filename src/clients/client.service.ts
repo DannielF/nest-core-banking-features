@@ -10,7 +10,7 @@ export class ClientService {
   async create(createClientDto: CreateClientDto) {
     const response = await fetch(`${this.headerService.url}/clients/`, {
       method: 'POST',
-      headers: this.headerService.headers,
+      headers: this.headerService.getHeaders(),
       body: JSON.stringify(createClientDto),
     });
     return await response.json();
@@ -21,7 +21,7 @@ export class ClientService {
   }
 
   async findOne(id: string) {
-    const { Accept, Authorization } = this.headerService.headers;
+    const { Accept, Authorization } = this.headerService.getHeaders();
     const response = await fetch(`${this.headerService.url}/clients/${id}`, {
       method: 'GET',
       headers: { Accept, Authorization, 'Content-type': 'application/json' },
