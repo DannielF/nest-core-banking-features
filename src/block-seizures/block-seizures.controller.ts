@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { BlockSeizureService } from './block-seizures.service';
 import { CreateBlockFundsDto } from './dto/create-block-funds.dto';
 import { CreateSeizureFundsDto } from './dto/create-siezure-funds.dto';
@@ -46,20 +38,5 @@ export class BlockSeizuresController {
   @Get('/all-blocks/:depositAccountId')
   getAllBlocksFunds(@Param('depositAccountId') id: string) {
     return this.blockSeizureService.AllBlockFunds(id);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.blockSeizureService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBlockSeizureDto) {
-    return this.blockSeizureService.update(+id, updateBlockSeizureDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.blockSeizureService.remove(+id);
   }
 }

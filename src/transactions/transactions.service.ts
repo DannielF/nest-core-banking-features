@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDepositDto } from './dto/create-deposit.dto';
-import { HeaderConfig } from 'src/config/header.config';
+import { HeaderService } from 'src/config/header.config';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { SearchFilterDTO } from './dto/create-search-filter.dto';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private readonly headerService: HeaderConfig) {}
+  constructor(private readonly headerService: HeaderService) {}
 
   async makeDeposit(id: string, createTransactionDto: CreateDepositDto) {
     const response = await fetch(
-      `${this.headerService.url}/deposits/${id}/deposit-transactions`,
+      `${HeaderService.config.baseUrl}/deposits/${id}/deposit-transactions`,
       {
         method: 'POST',
-        headers: this.headerService.getHeaders(),
+        headers: HeaderService.config.headers,
         body: JSON.stringify(createTransactionDto),
       },
     );
@@ -22,10 +22,10 @@ export class TransactionsService {
 
   async makeWithdraw(id: string, createTransactionDto: CreateWithdrawDto) {
     const response = await fetch(
-      `${this.headerService.url}/deposits/${id}/withdrawal-transactions`,
+      `${HeaderService.config.baseUrl}/deposits/${id}/withdrawal-transactions`,
       {
         method: 'POST',
-        headers: this.headerService.getHeaders(),
+        headers: HeaderService.config.headers,
         body: JSON.stringify(createTransactionDto),
       },
     );
@@ -33,9 +33,9 @@ export class TransactionsService {
   }
 
   async transactionsClient(id: string) {
-    const { Accept, Authorization } = this.headerService.getHeaders();
+    const { Accept, Authorization } = HeaderService.config.headers;
     const response = await fetch(
-      `${this.headerService.url}/deposits/${id}/transactions`,
+      `${HeaderService.config.baseUrl}/deposits/${id}/transactions`,
       {
         method: 'GET',
         headers: { Accept, Authorization },
@@ -45,12 +45,15 @@ export class TransactionsService {
   }
 
   async searchDeposits(createTransactionDto: SearchFilterDTO) {
-    const { Accept, Authorization } = this.headerService.getHeaders();
-    const response = await fetch(`${this.headerService.url}/deposits/search`, {
-      method: 'POST',
-      headers: { Accept, Authorization, 'Content-Type': 'application/json' },
-      body: JSON.stringify(createTransactionDto),
-    });
+    const { Accept, Authorization } = HeaderService.config.headers;
+    const response = await fetch(
+      `${HeaderService.config.baseUrl}/deposits/search`,
+      {
+        method: 'POST',
+        headers: { Accept, Authorization, 'Content-Type': 'application/json' },
+        body: JSON.stringify(createTransactionDto),
+      },
+    );
     return await response.json();
   }
 
@@ -68,9 +71,9 @@ export class TransactionsService {
       detailsLevel,
     }).toString();
 
-    const { Accept, Authorization } = this.headerService.getHeaders();
+    const { Accept, Authorization } = HeaderService.config.headers;
     const response = await fetch(
-      `${this.headerService.url}/deposits/transactions:search?${queryParams}`,
+      `${HeaderService.config.url}/deposits/transactions:search?${queryParams}`,
       {
         method: 'POST',
         headers: { Accept, Authorization, 'Content-Type': 'application/json' },
@@ -78,17 +81,5 @@ export class TransactionsService {
       },
     );
     return await response.json();
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
-  }
-
-  update(id: number, updateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
   }
 }

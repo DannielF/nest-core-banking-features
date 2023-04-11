@@ -1,21 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateApplyInterest } from './dto/create-fee-interest.dto';
-import { HeaderConfig } from 'src/config/header.config';
+import { HeaderService } from 'src/config/header.config';
 import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
 
 @Injectable()
 export class FeeInterestService {
-  constructor(private readonly headerService: HeaderConfig) {}
-
   async forceApplyInterest(
     id: string,
     createFeeInterestDto: CreateApplyInterest,
   ) {
     const response = await fetch(
-      `${this.headerService.url}/deposits/${id}:applyInterest`,
+      `${HeaderService.config.baseUrl}/deposits/${id}:applyInterest`,
       {
         method: 'POST',
-        headers: this.headerService.getHeaders(),
+        headers: HeaderService.config.headers,
         body: JSON.stringify(createFeeInterestDto),
       },
     );
@@ -35,9 +33,9 @@ export class FeeInterestService {
       paginationDetails: paginationDetails,
       detailsLevel: detailsLevel,
     }).toString();
-    const { Accept, Authorization } = this.headerService.getHeaders();
+    const { Accept, Authorization } = HeaderService.config.headers;
     const response = await fetch(
-      `${this.headerService.url}/accounting/interestaccrual:search?${queryParams}`,
+      `${HeaderService.config.baseUrl}/accounting/interestaccrual:search?${queryParams}`,
       {
         method: 'POST',
         headers: { Accept, Authorization, 'Content-type': 'application/json' },
@@ -45,17 +43,5 @@ export class FeeInterestService {
       },
     );
     return response.json();
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} feeInterest`;
-  }
-
-  update(id: number, updateFeeInterestDto) {
-    return `This action updates a #${id} feeInterest`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} feeInterest`;
   }
 }
