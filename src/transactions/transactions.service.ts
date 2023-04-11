@@ -32,7 +32,7 @@ export class TransactionsService {
     return await response.json();
   }
 
-  async allTransactionClients(id: string) {
+  async transactionsClient(id: string) {
     const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
       `${this.headerService.url}/deposits/${id}/transactions`,
@@ -51,6 +51,32 @@ export class TransactionsService {
       headers: { Accept, Authorization, 'Content-Type': 'application/json' },
       body: JSON.stringify(createTransactionDto),
     });
+    return await response.json();
+  }
+
+  async transactions(
+    createTransactionDto: SearchFilterDTO,
+    offset?: string,
+    limit?: string,
+    paginationDetails?: string,
+    detailsLevel?: string,
+  ) {
+    const queryParams = new URLSearchParams({
+      offset,
+      limit,
+      paginationDetails,
+      detailsLevel,
+    }).toString();
+
+    const { Accept, Authorization } = this.headerService.headers;
+    const response = await fetch(
+      `${this.headerService.url}/deposits/transactions:search?${queryParams}`,
+      {
+        method: 'POST',
+        headers: { Accept, Authorization, 'Content-Type': 'application/json' },
+        body: JSON.stringify(createTransactionDto),
+      },
+    );
     return await response.json();
   }
 

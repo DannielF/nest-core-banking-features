@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateDepositDto } from './dto/create-deposit.dto';
@@ -37,9 +38,26 @@ export class TransactionsController {
     return this.transactionsService.searchDeposits(createTransactionDto);
   }
 
+  @Post('all')
+  allTransactions(
+    @Body() createTransactionDto: SearchFilterDTO,
+    @Query('offset') offset?: string,
+    @Query('limit') limit?: string,
+    @Query('paginationDetails') paginationDetails?: string,
+    @Query('detailsLevel') detailsLevel?: string,
+  ) {
+    return this.transactionsService.transactions(
+      createTransactionDto,
+      offset,
+      limit,
+      paginationDetails,
+      detailsLevel,
+    );
+  }
+
   @Get()
-  allTransactionClients(@Param('depositAccountId') id: string) {
-    return this.transactionsService.allTransactionClients(id);
+  allTransactionClient(@Param('depositAccountId') id: string) {
+    return this.transactionsService.transactionsClient(id);
   }
 
   @Get(':id')
