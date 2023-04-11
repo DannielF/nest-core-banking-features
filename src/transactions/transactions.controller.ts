@@ -31,8 +31,8 @@ export class TransactionsController {
   }
 
   @Get()
-  findAll() {
-    return this.transactionsService.findAll();
+  allTransactionClients(@Param('depositAccountId') id: string) {
+    return this.transactionsService.allTransactionClients(id);
   }
 
   @Get(':id')

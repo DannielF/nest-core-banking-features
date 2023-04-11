@@ -31,8 +31,16 @@ export class TransactionsService {
     return await response.json();
   }
 
-  findAll() {
-    return `This action returns all transactions`;
+  async allTransactionClients(id: string) {
+    const { Accept, Authorization } = this.headerService.headers;
+    const response = await fetch(
+      `${this.headerService.url}/deposits/${id}/transactions`,
+      {
+        method: 'GET',
+        headers: { Accept, Authorization },
+      },
+    );
+    return await response.json();
   }
 
   findOne(id: number) {
