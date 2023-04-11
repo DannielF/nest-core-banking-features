@@ -4,8 +4,6 @@ import { HeaderService } from 'src/config/header.config';
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly headerService: HeaderService) {}
-
   async createDeposit(createAccountDto: CreateAccountDto) {
     const response = await fetch(`${HeaderService.config.baseUrl}/deposits`, {
       method: 'POST',
