@@ -6,7 +6,7 @@ import { HeaderService } from 'src/config/header.config';
 
 @Injectable()
 export class BlockSeizureService {
-  constructor(private readonly headerService: HeaderService) {}
+  headerService = new HeaderService();
 
   async blockFunds(id: string, createBlockSeizureDto: CreateBlockFundsDto) {
     const response = await fetch(

@@ -6,7 +6,7 @@ import { SearchFilterDTO } from './dto/create-search-filter.dto';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private readonly headerService: HeaderService) {}
+  headerService = new HeaderService();
 
   async makeDeposit(id: string, createTransactionDto: CreateDepositDto) {
     const response = await fetch(

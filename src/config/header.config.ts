@@ -1,12 +1,9 @@
-import { ConfigService } from '@nestjs/config';
 import { randomUUID } from 'crypto';
 
 export class HeaderService {
-  constructor(private readonly configService: ConfigService) {}
-
   get headers() {
-    const user = this.configService.get<string>('user');
-    const password = this.configService.get<string>('password');
+    const user = process.env.SANDBOX_USER;
+    const password = process.env.SANDBOX_USER_PASSWORD;
     const authString = Buffer.from(`${user}:${password}`).toString('base64');
 
     return {
@@ -18,6 +15,6 @@ export class HeaderService {
   }
 
   get baseUrl() {
-    return this.configService.get<string>('url');
+    return process.env.URL_MAMBU;
   }
 }

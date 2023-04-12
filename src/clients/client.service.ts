@@ -4,7 +4,7 @@ import { HeaderService } from 'src/config/header.config';
 
 @Injectable()
 export class ClientService {
-  constructor(private readonly headerService: HeaderService) {}
+  headerService = new HeaderService();
 
   async create(createClientDto: CreateClientDto) {
     const response = await fetch(`${this.headerService.baseUrl}/clients/`, {

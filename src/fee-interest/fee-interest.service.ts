@@ -5,7 +5,7 @@ import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
 
 @Injectable()
 export class FeeInterestService {
-  constructor(private readonly headerService: HeaderService) {}
+  headerService = new HeaderService();
 
   async forceApplyInterest(
     id: string,
