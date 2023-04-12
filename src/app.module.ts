@@ -6,6 +6,7 @@ import { AccountModule } from './accounts/account.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { BlockSeizuresModule } from './block-seizures/block-seizures.module';
 import { FeeInterestModule } from './fee-interest/fee-interest.module';
+import { HeaderModule } from './config/header/header.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +20,7 @@ import { FeeInterestModule } from './fee-interest/fee-interest.module';
     TransactionsModule,
     BlockSeizuresModule,
     FeeInterestModule,
+    HeaderModule,
   ],
   controllers: [],
   providers: [],

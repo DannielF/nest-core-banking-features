@@ -1,9 +1,14 @@
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { randomUUID } from 'crypto';
 
+@Injectable()
 export class HeaderService {
+  constructor(private readonly configService: ConfigService) {}
+
   get headers() {
-    const user = process.env.SANDBOX_USER;
-    const password = process.env.SANDBOX_USER_PASSWORD;
+    const user = this.configService.get('user');
+    const password = this.configService.get('password');
     const authString = Buffer.from(`${user}:${password}`).toString('base64');
 
     return {
@@ -15,6 +20,6 @@ export class HeaderService {
   }
 
   get baseUrl() {
-    return process.env.URL_MAMBU;
+    return this.configService.get('url');
   }
 }

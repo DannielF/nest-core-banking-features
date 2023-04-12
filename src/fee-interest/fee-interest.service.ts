@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateApplyInterest } from './dto/create-fee-interest.dto';
-import { HeaderService } from 'src/config/header.config';
 import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
+import { HeaderService } from 'src/config/header/header.config';
 
 @Injectable()
 export class FeeInterestService {
-  headerService = new HeaderService();
+  constructor(private readonly headerService: HeaderService) {}
 
   async forceApplyInterest(
     id: string,

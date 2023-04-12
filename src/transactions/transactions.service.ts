@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDepositDto } from './dto/create-deposit.dto';
-import { HeaderService } from 'src/config/header.config';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { SearchFilterDTO } from './dto/create-search-filter.dto';
+import { HeaderService } from 'src/config/header/header.config';
 
 @Injectable()
 export class TransactionsService {
-  headerService = new HeaderService();
+  constructor(private readonly headerService: HeaderService) {}
 
   async makeDeposit(id: string, createTransactionDto: CreateDepositDto) {
     const response = await fetch(

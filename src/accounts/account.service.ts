@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { HeaderService } from 'src/config/header.config';
+import { HeaderService } from 'src/config/header/header.config';
 
 @Injectable()
 export class AccountService {
-  headerService = new HeaderService();
+  constructor(private readonly headerService: HeaderService) {}
 
   async createDeposit(createAccountDto: CreateAccountDto) {
     const response = await fetch(`${this.headerService.baseUrl}/deposits`, {
