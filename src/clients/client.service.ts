@@ -4,19 +4,21 @@ import { HeaderService } from 'src/config/header.config';
 
 @Injectable()
 export class ClientService {
+  constructor(private readonly headerService: HeaderService) {}
+
   async create(createClientDto: CreateClientDto) {
-    const response = await fetch(`${HeaderService.config.baseUrl}/clients/`, {
+    const response = await fetch(`${this.headerService.baseUrl}/clients/`, {
       method: 'POST',
-      headers: HeaderService.config.headers,
+      headers: this.headerService.headers,
       body: JSON.stringify(createClientDto),
     });
     return await response.json();
   }
 
   async getClientById(id: string) {
-    const { Accept, Authorization } = HeaderService.config.headers;
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/clients/${id}`,
+      `${this.headerService.baseUrl}/clients/${id}`,
       {
         method: 'GET',
         headers: { Accept, Authorization, 'Content-type': 'application/json' },

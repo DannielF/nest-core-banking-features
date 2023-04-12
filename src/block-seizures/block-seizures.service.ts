@@ -6,12 +6,14 @@ import { HeaderService } from 'src/config/header.config';
 
 @Injectable()
 export class BlockSeizureService {
+  constructor(private readonly headerService: HeaderService) {}
+
   async blockFunds(id: string, createBlockSeizureDto: CreateBlockFundsDto) {
     const response = await fetch(
-      `${HeaderService.config.url}/deposits/${id}/blocks`,
+      `${this.headerService.baseUrl}/deposits/${id}/blocks`,
       {
         method: 'POST',
-        headers: HeaderService.config.headers,
+        headers: this.headerService.headers,
         body: JSON.stringify(createBlockSeizureDto),
       },
     );
@@ -20,10 +22,10 @@ export class BlockSeizureService {
 
   async seizureFunds(id: string, createBlockSeizureDto: CreateSeizureFundsDto) {
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/${id}/seizure-transactions`,
+      `${this.headerService.baseUrl}/deposits/${id}/seizure-transactions`,
       {
         method: 'POST',
-        headers: HeaderService.config.headers,
+        headers: this.headerService.headers,
         body: JSON.stringify(createBlockSeizureDto),
       },
     );
@@ -35,10 +37,10 @@ export class BlockSeizureService {
     createBlockSeizureDto: CreateAccountChangeStateDto,
   ) {
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/${id}:changeState`,
+      `${this.headerService.baseUrl}/deposits/${id}:changeState`,
       {
         method: 'POST',
-        headers: HeaderService.config.headers,
+        headers: this.headerService.headers,
         body: JSON.stringify(createBlockSeizureDto),
       },
     );
@@ -46,9 +48,9 @@ export class BlockSeizureService {
   }
 
   async AllBlockFunds(id: string) {
-    const { Accept, Authorization } = HeaderService.config.headers;
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/${id}/blocks`,
+      `${this.headerService.baseUrl}/deposits/${id}/blocks`,
       {
         method: 'GET',
         headers: { Accept, Authorization },

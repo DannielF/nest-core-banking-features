@@ -5,15 +5,17 @@ import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
 
 @Injectable()
 export class FeeInterestService {
+  constructor(private readonly headerService: HeaderService) {}
+
   async forceApplyInterest(
     id: string,
     createFeeInterestDto: CreateApplyInterest,
   ) {
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/${id}:applyInterest`,
+      `${this.headerService.baseUrl}/deposits/${id}:applyInterest`,
       {
         method: 'POST',
-        headers: HeaderService.config.headers,
+        headers: this.headerService.headers,
         body: JSON.stringify(createFeeInterestDto),
       },
     );
@@ -33,9 +35,9 @@ export class FeeInterestService {
       paginationDetails: paginationDetails,
       detailsLevel: detailsLevel,
     }).toString();
-    const { Accept, Authorization } = HeaderService.config.headers;
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/accounting/interestaccrual:search?${queryParams}`,
+      `${this.headerService.baseUrl}/accounting/interestaccrual:search?${queryParams}`,
       {
         method: 'POST',
         headers: { Accept, Authorization, 'Content-type': 'application/json' },

@@ -19,7 +19,7 @@ export class ClientController {
     return this.clientService.create(createClientDto);
   }
 
-  @Get('/:id')
+  @Get(':id')
   findOne(@Param('id') id: string) {
     return this.clientService.getClientById(id);
   }

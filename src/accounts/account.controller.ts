@@ -6,12 +6,12 @@ import { CreateAccountDto } from './dto/create-account.dto';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Post('/deposits')
+  @Post('deposits')
   deposit(@Body() createAccountDto: CreateAccountDto) {
     return this.accountService.createDeposit(createAccountDto);
   }
 
-  @Get('/get-ecoded/:Idproducto')
+  @Get('get-ecoded/:Idproducto')
   depositProducts(
     @Param('Idproducto') id: string,
     @Query('offset') offset?: string,

@@ -6,7 +6,6 @@ import { AccountModule } from './accounts/account.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { BlockSeizuresModule } from './block-seizures/block-seizures.module';
 import { FeeInterestModule } from './fee-interest/fee-interest.module';
-import { HeaderService } from './config/header.config';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -22,6 +21,6 @@ import { HeaderService } from './config/header.config';
     FeeInterestModule,
   ],
   controllers: [],
-  providers: [HeaderService],
+  providers: [],
 })
 export class AppModule {}

@@ -4,10 +4,12 @@ import { HeaderService } from 'src/config/header.config';
 
 @Injectable()
 export class AccountService {
+  constructor(private readonly headerService: HeaderService) {}
+
   async createDeposit(createAccountDto: CreateAccountDto) {
-    const response = await fetch(`${HeaderService.config.baseUrl}/deposits`, {
+    const response = await fetch(`${this.headerService.baseUrl}/deposits`, {
       method: 'POST',
-      headers: HeaderService.config.headers,
+      headers: this.headerService.headers,
       body: JSON.stringify(createAccountDto),
     });
     return await response.json();
@@ -26,9 +28,9 @@ export class AccountService {
       paginationDetails: paginationDetails,
       detailsLevel: detailsLevel,
     }).toString();
-    const { Accept, Authorization } = HeaderService.config.headers;
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/depositproducts/${id}?${queryParams}`,
+      `${this.headerService.baseUrl}/depositproducts/${id}?${queryParams}`,
       {
         method: 'GET',
         headers: { Accept, Authorization },

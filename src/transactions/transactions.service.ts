@@ -6,12 +6,14 @@ import { SearchFilterDTO } from './dto/create-search-filter.dto';
 
 @Injectable()
 export class TransactionsService {
+  constructor(private readonly headerService: HeaderService) {}
+
   async makeDeposit(id: string, createTransactionDto: CreateDepositDto) {
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/${id}/deposit-transactions`,
+      `${this.headerService.baseUrl}/deposits/${id}/deposit-transactions`,
       {
         method: 'POST',
-        headers: HeaderService.config.headers,
+        headers: this.headerService.headers,
         body: JSON.stringify(createTransactionDto),
       },
     );
@@ -20,10 +22,10 @@ export class TransactionsService {
 
   async makeWithdraw(id: string, createTransactionDto: CreateWithdrawDto) {
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/${id}/withdrawal-transactions`,
+      `${this.headerService.baseUrl}/deposits/${id}/withdrawal-transactions`,
       {
         method: 'POST',
-        headers: HeaderService.config.headers,
+        headers: this.headerService.headers,
         body: JSON.stringify(createTransactionDto),
       },
     );
@@ -31,9 +33,9 @@ export class TransactionsService {
   }
 
   async transactionsClient(id: string) {
-    const { Accept, Authorization } = HeaderService.config.headers;
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/${id}/transactions`,
+      `${this.headerService.baseUrl}/deposits/${id}/transactions`,
       {
         method: 'GET',
         headers: { Accept, Authorization },
@@ -43,9 +45,9 @@ export class TransactionsService {
   }
 
   async searchDeposits(createTransactionDto: SearchFilterDTO) {
-    const { Accept, Authorization } = HeaderService.config.headers;
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${HeaderService.config.baseUrl}/deposits/search`,
+      `${this.headerService.baseUrl}/deposits/search`,
       {
         method: 'POST',
         headers: { Accept, Authorization, 'Content-Type': 'application/json' },
@@ -69,9 +71,9 @@ export class TransactionsService {
       detailsLevel,
     }).toString();
 
-    const { Accept, Authorization } = HeaderService.config.headers;
+    const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${HeaderService.config.url}/deposits/transactions:search?${queryParams}`,
+      `${this.headerService.baseUrl}/deposits/transactions:search?${queryParams}`,
       {
         method: 'POST',
         headers: { Accept, Authorization, 'Content-Type': 'application/json' },
