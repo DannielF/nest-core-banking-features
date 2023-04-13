@@ -7,5 +7,6 @@ import { HeaderModule } from 'src/config/header/header.module';
   controllers: [AccountController],
   providers: [AccountService],
   imports: [HeaderModule],
+  exports: [AccountService],
 })
 export class AccountModule {}

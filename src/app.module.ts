@@ -7,6 +7,7 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { BlockSeizuresModule } from './block-seizures/block-seizures.module';
 import { FeeInterestModule } from './fee-interest/fee-interest.module';
 import { HeaderModule } from './config/header/header.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,6 +22,7 @@ import { HeaderModule } from './config/header/header.module';
     BlockSeizuresModule,
     FeeInterestModule,
     HeaderModule,
+    OnboardingModule,
   ],
   controllers: [],
   providers: [],

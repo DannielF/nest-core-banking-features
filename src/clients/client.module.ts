@@ -7,5 +7,6 @@ import { HeaderModule } from 'src/config/header/header.module';
   controllers: [ClientController],
   providers: [ClientService],
   imports: [HeaderModule],
+  exports: [ClientService],
 })
 export class ClientModule {}
