@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { HeaderService } from 'src/config/header/header.config';
+import { ResponseCreateClient } from './entities/response-create-client.entity';
 
 @Injectable()
 export class ClientService {
   constructor(private readonly headerService: HeaderService) {}
 
-  async create(createClientDto: CreateClientDto) {
+  async create(
+    createClientDto: CreateClientDto,
+  ): Promise<ResponseCreateClient> {
     const response = await fetch(`${this.headerService.baseUrl}/clients/`, {
       method: 'POST',
       headers: this.headerService.headers,
