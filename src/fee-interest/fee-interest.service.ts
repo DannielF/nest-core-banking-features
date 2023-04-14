@@ -30,10 +30,10 @@ export class FeeInterestService {
     detailsLevel?,
   ) {
     const queryParams = new URLSearchParams({
-      offset: offset,
-      limit: limit,
-      paginationDetails: paginationDetails,
-      detailsLevel: detailsLevel,
+      offset: offset ?? '0',
+      limit: limit ?? '10',
+      paginationDetails: paginationDetails ?? 'OFF',
+      detailsLevel: detailsLevel ?? 'FULL',
     }).toString();
     const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
