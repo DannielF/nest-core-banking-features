@@ -1,10 +1,10 @@
 export class CreateAccountDto {
-  accountHolderKey: string;
-  accountHolderType?: string;
-  name: string;
-  productTypeKey: string;
-  notes?: string;
-  accountState?: string;
-  accountType: string;
-  currencyCode: string;
+  readonly accountHolderKey: string;
+  readonly accountHolderType?: string;
+  readonly name: string;
+  readonly productTypeKey: string;
+  readonly notes?: string;
+  readonly accountState?: string;
+  readonly accountType: string;
+  readonly currencyCode: string;
 }
