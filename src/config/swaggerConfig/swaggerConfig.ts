@@ -4,6 +4,7 @@ export const config = new DocumentBuilder()
   .setTitle('Mambu implementation API')
   .setDescription('Client operations API')
   .setVersion('1.0')
+  .setLicense('MIT', 'https://opensource.org/licenses/MIT')
   .build();
 
 export const options: SwaggerDocumentOptions = {
