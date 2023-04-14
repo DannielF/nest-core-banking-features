@@ -5,6 +5,7 @@ export class OnboardingClientDTO {
   email: string;
   gender: string;
   idProduct: string;
+  holderType: string;
   _personalizados: Personalization;
 }
 

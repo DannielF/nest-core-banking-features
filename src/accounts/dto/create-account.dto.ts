@@ -4,7 +4,7 @@ export class CreateAccountDto {
   @ApiProperty({ example: '1234567890', description: 'Client id' })
   readonly accountHolderKey: string;
   @ApiProperty({ example: 'CLIENT', description: 'Client type' })
-  readonly accountHolderType?: string;
+  readonly accountHolderType: string;
   @ApiProperty({
     example: 'client.name client.lastname',
     description: 'Account name',
@@ -12,11 +12,19 @@ export class CreateAccountDto {
   readonly name: string;
   @ApiProperty({ example: '1234567890', description: 'Product id' })
   readonly productTypeKey: string;
-  @ApiProperty({ example: 'lorem ipsup', description: 'Notes to add' })
+  @ApiProperty({
+    example: 'lorem ipsup',
+    description: 'Notes to add',
+    required: false,
+  })
   readonly notes?: string;
   @ApiProperty({ example: 'ACTIVE', description: 'Account status' })
   readonly accountState?: string;
-  @ApiProperty({ example: 'SAVINGS', description: 'Account type' })
+  @ApiProperty({
+    example: 'SAVINGS',
+    description: 'Account type',
+    required: false,
+  })
   readonly accountType: string;
   @ApiProperty({ example: 'USD', description: 'Currency code' })
   readonly currencyCode: string;

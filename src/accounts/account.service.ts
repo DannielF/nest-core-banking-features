@@ -20,21 +20,22 @@ export class AccountService {
   }
 
   async getEcodedProduct(
-    id: string,
-    offset?,
-    limit?,
-    paginationDetails?,
-    detailsLevel?,
+    Idproduct: string,
+    offset?: string,
+    limit?: string,
+    paginationDetails?: string,
+    detailsLevel?: string,
   ): Promise<ResponseGetProductEntity> {
     const queryParams = new URLSearchParams({
-      offset: offset,
-      limit: limit,
-      paginationDetails: paginationDetails,
-      detailsLevel: detailsLevel,
+      offset: offset ?? '0',
+      limit: limit ?? '10',
+      paginationDetails: paginationDetails ?? 'OFF',
+      detailsLevel: detailsLevel ?? 'FULL',
     }).toString();
+
     const { Accept, Authorization } = this.headerService.headers;
     const response = await fetch(
-      `${this.headerService.baseUrl}/depositproducts/${id}?${queryParams}`,
+      `${this.headerService.baseUrl}/depositproducts/${Idproduct}?${queryParams}`,
       {
         method: 'GET',
         headers: { Accept, Authorization },

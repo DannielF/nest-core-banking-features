@@ -12,16 +12,19 @@ export class OnboardingService {
 
   async createClient(request: OnboardingClientDTO) {
     const { idProduct, ...client } = request;
+
     const clientResponse = await this.clientService.create(client);
     const productInfo = await this.accountService.getEcodedProduct(idProduct);
 
     const accountResponse = await this.accountService.createDeposit({
       accountHolderKey: clientResponse.encodedKey,
+      accountHolderType: client.holderType,
       name: `${clientResponse.firstName} ${clientResponse.lastName}`,
       productTypeKey: productInfo.encodedKey,
       accountType: productInfo.type,
       currencyCode: productInfo.currencySettings.currencies[0].currencyCode,
     });
+
     return { clientResponse, accountResponse };
   }
 }
