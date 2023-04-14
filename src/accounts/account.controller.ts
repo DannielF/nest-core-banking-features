@@ -5,6 +5,7 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -35,6 +36,10 @@ export class AccountController {
     type: ResponseGetProductEntity,
   })
   @ApiParam({ name: 'Idproduct', type: 'string', required: true })
+  @ApiQuery({ name: 'offset', type: 'string', required: false })
+  @ApiQuery({ name: 'limit', type: 'string', required: false })
+  @ApiQuery({ name: 'paginationDetails', type: 'string', required: false })
+  @ApiQuery({ name: 'detailsLevel', type: 'string', required: false })
   @Get('get-ecoded/:Idproduct')
   depositProducts(
     @Param('Idproduct') id: string,
