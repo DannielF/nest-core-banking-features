@@ -1,15 +1,22 @@
-export class ResponseGetProductEntity {
-  encodedKey: string;
-  id: string;
-  type: string;
-  currencySettings: CurrencySettings;
-}
+import { ApiProperty } from '@nestjs/swagger';
 
-export class CurrencySettings {
+class CurrencySettings {
+  @ApiProperty()
   currencies: Currency[];
 }
 
-export class Currency {
+class Currency {
+  @ApiProperty()
   currencyCode: string;
   code: string;
+}
+export class ResponseGetProductEntity {
+  @ApiProperty()
+  encodedKey: string;
+  @ApiProperty()
+  id: string;
+  @ApiProperty()
+  type: string;
+  @ApiProperty()
+  currencySettings: CurrencySettings;
 }
