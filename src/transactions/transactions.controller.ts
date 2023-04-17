@@ -47,7 +47,19 @@ export class TransactionsController {
   }
 
   @Get('all/:depositAccountId')
-  allTransactionClient(@Param('depositAccountId') id: string) {
-    return this.transactionsService.transactionsClient(id);
+  allTransactionClient(
+    @Param('depositAccountId') depositAccountId: string,
+    @Query('offset') offset?: string,
+    @Query('limit') limit?: string,
+    @Query('paginationDetails') paginationDetails?: string,
+    @Query('detailsLevel') detailsLevel?: string,
+  ) {
+    return this.transactionsService.transactionsClient(
+      depositAccountId,
+      offset,
+      limit,
+      paginationDetails,
+      detailsLevel,
+    );
   }
 }

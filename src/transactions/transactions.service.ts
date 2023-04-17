@@ -32,10 +32,23 @@ export class TransactionsService {
     return await response.json();
   }
 
-  async transactionsClient(id: string) {
+  async transactionsClient(
+    depositAccountId: string,
+    offset?: string,
+    limit?: string,
+    paginationDetails?: string,
+    detailsLevel?: string,
+  ) {
     const { Accept, Authorization } = this.headerService.headers;
+    const queryParams = new URLSearchParams({
+      offset: offset ?? '0',
+      limit: limit ?? '10',
+      paginationDetails: paginationDetails ?? 'OFF',
+      detailsLevel: detailsLevel ?? 'BASIC',
+    }).toString();
+
     const response = await fetch(
-      `${this.headerService.baseUrl}/deposits/${id}/transactions`,
+      `${this.headerService.baseUrl}/deposits/${depositAccountId}/transactions?${queryParams}`,
       {
         method: 'GET',
         headers: { Accept, Authorization },

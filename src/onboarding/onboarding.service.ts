@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { AccountService } from 'src/accounts/account.service';
 import { ClientService } from 'src/clients/client.service';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
+import { TransactionsService } from 'src/transactions/transactions.service';
 
 @Injectable()
 export class OnboardingService {
   constructor(
     private readonly clientService: ClientService,
     private readonly accountService: AccountService,
+    private readonly transactionService: TransactionsService,
   ) {}
 
   async createClient(request: OnboardingClientDTO) {
@@ -26,5 +28,16 @@ export class OnboardingService {
     });
 
     return { clientResponse, accountResponse };
+  }
+
+  async lastTransactions(depositAccountId: string, limit: string) {
+    const response = await this.transactionService.transactionsClient(
+      depositAccountId,
+      '0',
+      limit,
+      'OFF',
+      'BASIC',
+    );
+    return response;
   }
 }

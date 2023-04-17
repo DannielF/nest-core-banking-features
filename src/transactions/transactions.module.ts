@@ -7,5 +7,6 @@ import { HeaderModule } from 'src/config/header/header.module';
   controllers: [TransactionsController],
   providers: [TransactionsService],
   imports: [HeaderModule],
+  exports: [TransactionsService],
 })
 export class TransactionsModule {}
