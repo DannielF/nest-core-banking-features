@@ -28,4 +28,9 @@ export class OnboardingController {
   payInterestAccrued(@Body() request: { accountId: string; date: string }) {
     return this.onboardingService.payInterestAccrued(request);
   }
+
+  @Post('block-account')
+  blockAccount(@Body() request: { accountId: string }) {
+    return this.onboardingService.blockAccount(request);
+  }
 }

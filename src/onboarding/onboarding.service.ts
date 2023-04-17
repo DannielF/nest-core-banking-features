@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { AccountService } from 'src/accounts/account.service';
-import { ClientService } from 'src/clients/client.service';
-import { OnboardingClientDTO } from './dto/onboarding-client.dto';
-import { TransactionsService } from 'src/transactions/transactions.service';
 import { BlockSeizureService } from 'src/block-seizures/block-seizures.service';
 import { CreateBlockFundsDto } from 'src/block-seizures/dto/create-block-funds.dto';
-import { HeaderService } from 'src/config/header/header.config';
-import { FeeInterestService } from 'src/fee-interest/fee-interest.service';
-import { CreateApplyInterest } from 'src/fee-interest/dto/create-fee-interest.dto';
 import { CreateSeizureFundsDto } from 'src/block-seizures/dto/create-siezure-funds.dto';
+import { ClientService } from 'src/clients/client.service';
+import { HeaderService } from 'src/config/header/header.config';
+import { CreateApplyInterest } from 'src/fee-interest/dto/create-fee-interest.dto';
+import { FeeInterestService } from 'src/fee-interest/fee-interest.service';
+import { TransactionsService } from 'src/transactions/transactions.service';
+import { OnboardingClientDTO } from './dto/onboarding-client.dto';
+import { CreateAccountChangeStateDto } from 'src/block-seizures/dto/create-account-change-state.dto';
 
 @Injectable()
 export class OnboardingService {
@@ -87,5 +88,18 @@ export class OnboardingService {
       requestInterest,
     );
     return response;
+  }
+
+  async blockAccount(request: { accountId: string }) {
+    const requestBlockAccount: CreateAccountChangeStateDto = {
+      action: 'BLOCK',
+      notes: 'Block account standard service',
+    };
+    const responseBlockAccount =
+      await this.blockSeizureService.accountChangeState(
+        request.accountId,
+        requestBlockAccount,
+      );
+    return responseBlockAccount;
   }
 }
