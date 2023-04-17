@@ -7,5 +7,6 @@ import { HeaderModule } from 'src/config/header/header.module';
   controllers: [BlockSeizuresController],
   providers: [BlockSeizureService],
   imports: [HeaderModule],
+  exports: [BlockSeizureService],
 })
 export class BlockSeizuresModule {}

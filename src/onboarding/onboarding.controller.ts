@@ -1,15 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { OnboardingService } from './onboarding.service';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
+import { OnboardingService } from './onboarding.service';
 
 @Controller('onboarding')
 export class OnboardingController {
   constructor(private readonly onboardingService: OnboardingService) {}
-
-  @Post('client')
-  createClient(@Body() request: OnboardingClientDTO) {
-    return this.onboardingService.createClient(request);
-  }
 
   @Get('last-transactions/:depositAccountId/:limit')
   getLastTransactions(
@@ -17,5 +12,15 @@ export class OnboardingController {
     @Param('limit') limit: string,
   ) {
     return this.onboardingService.lastTransactions(depositAccountId, limit);
+  }
+
+  @Post('client')
+  createClient(@Body() request: OnboardingClientDTO) {
+    return this.onboardingService.createClient(request);
+  }
+
+  @Post('block-funds')
+  blockFundsAccount(@Body() request: { accountId: string; amount: string }) {
+    return this.onboardingService.blockFunds(request);
   }
 }

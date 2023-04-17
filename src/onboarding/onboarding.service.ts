@@ -3,6 +3,9 @@ import { AccountService } from 'src/accounts/account.service';
 import { ClientService } from 'src/clients/client.service';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { TransactionsService } from 'src/transactions/transactions.service';
+import { BlockSeizureService } from 'src/block-seizures/block-seizures.service';
+import { CreateBlockFundsDto } from 'src/block-seizures/dto/create-block-funds.dto';
+import { HeaderService } from 'src/config/header/header.config';
 
 @Injectable()
 export class OnboardingService {
@@ -10,6 +13,8 @@ export class OnboardingService {
     private readonly clientService: ClientService,
     private readonly accountService: AccountService,
     private readonly transactionService: TransactionsService,
+    private readonly blockSeizureService: BlockSeizureService,
+    private readonly headerService: HeaderService,
   ) {}
 
   async createClient(request: OnboardingClientDTO) {
@@ -37,6 +42,22 @@ export class OnboardingService {
       limit,
       'OFF',
       'BASIC',
+    );
+    return response;
+  }
+
+  async blockFunds(request: { accountId: string; amount: string }) {
+    const { idempotency_key } = this.headerService.headers;
+
+    const requestBlock: CreateBlockFundsDto = {
+      amount: request.amount,
+      externalReferenceId: idempotency_key,
+      notes: 'Block funds onboarding service',
+    };
+
+    const response = await this.blockSeizureService.blockFunds(
+      request.accountId,
+      requestBlock,
     );
     return response;
   }
