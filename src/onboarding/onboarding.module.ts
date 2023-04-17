@@ -6,6 +6,7 @@ import { AccountModule } from 'src/accounts/account.module';
 import { TransactionsModule } from 'src/transactions/transactions.module';
 import { BlockSeizuresModule } from 'src/block-seizures/block-seizures.module';
 import { HeaderModule } from 'src/config/header/header.module';
+import { FeeInterestModule } from 'src/fee-interest/fee-interest.module';
 
 @Module({
   controllers: [OnboardingController],
@@ -15,6 +16,7 @@ import { HeaderModule } from 'src/config/header/header.module';
     AccountModule,
     TransactionsModule,
     BlockSeizuresModule,
+    FeeInterestModule,
     HeaderModule,
   ],
 })

@@ -6,6 +6,8 @@ import { TransactionsService } from 'src/transactions/transactions.service';
 import { BlockSeizureService } from 'src/block-seizures/block-seizures.service';
 import { CreateBlockFundsDto } from 'src/block-seizures/dto/create-block-funds.dto';
 import { HeaderService } from 'src/config/header/header.config';
+import { FeeInterestService } from 'src/fee-interest/fee-interest.service';
+import { CreateApplyInterest } from 'src/fee-interest/dto/create-fee-interest.dto';
 
 @Injectable()
 export class OnboardingService {
@@ -14,6 +16,7 @@ export class OnboardingService {
     private readonly accountService: AccountService,
     private readonly transactionService: TransactionsService,
     private readonly blockSeizureService: BlockSeizureService,
+    private readonly feeInterestService: FeeInterestService,
     private readonly headerService: HeaderService,
   ) {}
 
@@ -58,6 +61,21 @@ export class OnboardingService {
     const response = await this.blockSeizureService.blockFunds(
       request.accountId,
       requestBlock,
+    );
+    return response;
+  }
+
+  async payInterestAccrued(request: { accountId: string; date: string }) {
+    const requestInterest: CreateApplyInterest = {
+      interestApplicationDate: request.date,
+      isPaymentHolidaysInterest: false,
+      paymentHolidaysInterestAmount: 0,
+      notes: 'Pay interest onboarding service',
+    };
+
+    const response = await this.feeInterestService.forceApplyInterest(
+      request.accountId,
+      requestInterest,
     );
     return response;
   }

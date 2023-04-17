@@ -7,5 +7,6 @@ import { HeaderModule } from 'src/config/header/header.module';
   controllers: [FeeInterestController],
   providers: [FeeInterestService],
   imports: [HeaderModule],
+  exports: [FeeInterestService],
 })
 export class FeeInterestModule {}
