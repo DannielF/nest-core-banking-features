@@ -1,6 +1,6 @@
 export class CreateApplyInterest {
   interestApplicationDate: string;
-  isPaymentHolidaysInterest: boolean;
+  isPaymentHolidaysInterest?: boolean;
   notes: string;
-  paymentHolidaysInterestAmount: number;
+  paymentHolidaysInterestAmount?: number;
 }

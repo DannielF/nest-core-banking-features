@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { OnboardingService } from './onboarding.service';
 
-@Controller('onboarding')
+@Controller('standard')
 export class OnboardingController {
   constructor(private readonly onboardingService: OnboardingService) {}
 
@@ -14,7 +14,7 @@ export class OnboardingController {
     return this.onboardingService.lastTransactions(depositAccountId, limit);
   }
 
-  @Post('client')
+  @Post('onboarding')
   createClient(@Body() request: OnboardingClientDTO) {
     return this.onboardingService.createClient(request);
   }

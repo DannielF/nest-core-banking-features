@@ -8,6 +8,7 @@ import { CreateBlockFundsDto } from 'src/block-seizures/dto/create-block-funds.d
 import { HeaderService } from 'src/config/header/header.config';
 import { FeeInterestService } from 'src/fee-interest/fee-interest.service';
 import { CreateApplyInterest } from 'src/fee-interest/dto/create-fee-interest.dto';
+import { CreateSeizureFundsDto } from 'src/block-seizures/dto/create-siezure-funds.dto';
 
 @Injectable()
 export class OnboardingService {
@@ -55,22 +56,30 @@ export class OnboardingService {
     const requestBlock: CreateBlockFundsDto = {
       amount: request.amount,
       externalReferenceId: idempotency_key,
-      notes: 'Block funds onboarding service',
+      notes: 'Block funds standard service',
     };
-
-    const response = await this.blockSeizureService.blockFunds(
+    const responseBlock = await this.blockSeizureService.blockFunds(
       request.accountId,
       requestBlock,
     );
-    return response;
+
+    const requestSeizure: CreateSeizureFundsDto = {
+      amount: request.amount,
+      blockId: responseBlock.externalReferenceId,
+      notes: 'Seizure funds standard service',
+      transactionChannelId: 'cash',
+    };
+    const responseSeizure = await this.blockSeizureService.seizureFunds(
+      request.accountId,
+      requestSeizure,
+    );
+    return { responseBlock, responseSeizure };
   }
 
   async payInterestAccrued(request: { accountId: string; date: string }) {
     const requestInterest: CreateApplyInterest = {
       interestApplicationDate: request.date,
-      isPaymentHolidaysInterest: false,
-      paymentHolidaysInterestAmount: 0,
-      notes: 'Pay interest onboarding service',
+      notes: 'Pay interest standard service',
     };
 
     const response = await this.feeInterestService.forceApplyInterest(

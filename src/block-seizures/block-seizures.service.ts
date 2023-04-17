@@ -3,12 +3,16 @@ import { CreateBlockFundsDto } from './dto/create-block-funds.dto';
 import { CreateSeizureFundsDto } from './dto/create-siezure-funds.dto';
 import { CreateAccountChangeStateDto } from './dto/create-account-change-state.dto';
 import { HeaderService } from 'src/config/header/header.config';
+import { ResponseBlockFunds } from './entities/response-block-funds.entity';
 
 @Injectable()
 export class BlockSeizureService {
   constructor(private readonly headerService: HeaderService) {}
 
-  async blockFunds(id: string, createBlockSeizureDto: CreateBlockFundsDto) {
+  async blockFunds(
+    id: string,
+    createBlockSeizureDto: CreateBlockFundsDto,
+  ): Promise<ResponseBlockFunds> {
     const response = await fetch(
       `${this.headerService.baseUrl}/deposits/${id}/blocks`,
       {
