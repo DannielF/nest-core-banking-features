@@ -10,6 +10,7 @@ import { FeeInterestService } from 'src/fee-interest/fee-interest.service';
 import { TransactionsService } from 'src/transactions/transactions.service';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { CreateAccountChangeStateDto } from 'src/block-seizures/dto/create-account-change-state.dto';
+import { CreateDepositDto } from 'src/transactions/dto/create-deposit.dto';
 
 @Injectable()
 export class OnboardingService {
@@ -101,5 +102,24 @@ export class OnboardingService {
         requestBlockAccount,
       );
     return responseBlockAccount;
+  }
+
+  async depositAccount(request: { accountId: string; amount: string }) {
+    const { idempotency_key } = this.headerService.headers;
+
+    const requestBody: CreateDepositDto = {
+      amount: request.amount,
+      notes: 'Deposit standard service',
+      transactionDetails: {
+        transactionChannelId: 'OnlineChannelLocales',
+      },
+      paymentOrderId: idempotency_key,
+      externalId: idempotency_key,
+    };
+    const depositResponse = await this.transactionService.makeDeposit(
+      request.accountId,
+      requestBody,
+    );
+    return depositResponse;
   }
 }

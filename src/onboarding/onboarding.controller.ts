@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { OnboardingService } from './onboarding.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Standard')
 @Controller('standard')
 export class OnboardingController {
   constructor(private readonly onboardingService: OnboardingService) {}
@@ -32,5 +34,10 @@ export class OnboardingController {
   @Post('block-account')
   blockAccount(@Body() request: { accountId: string }) {
     return this.onboardingService.blockAccount(request);
+  }
+
+  @Post('deposits')
+  depositAccount(@Body() request: { accountId: string; amount: string }) {
+    return this.onboardingService.depositAccount(request);
   }
 }
