@@ -37,7 +37,12 @@ export class OnboardingController {
   }
 
   @Post('deposits')
-  depositAccount(@Body() request: { accountId: string; amount: string }) {
+  makeDeposit(@Body() request: { accountId: string; amount: string }) {
     return this.onboardingService.depositAccount(request);
+  }
+
+  @Post('withdraw')
+  makeWithdraw(@Body() request: { accountId: string; amount: string }) {
+    return this.onboardingService.withdrawAccount(request);
   }
 }

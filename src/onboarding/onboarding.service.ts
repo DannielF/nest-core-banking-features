@@ -11,6 +11,7 @@ import { TransactionsService } from 'src/transactions/transactions.service';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { CreateAccountChangeStateDto } from 'src/block-seizures/dto/create-account-change-state.dto';
 import { CreateDepositDto } from 'src/transactions/dto/create-deposit.dto';
+import { CreateWithdrawDto } from 'src/transactions/dto/create-withdraw.dto';
 
 @Injectable()
 export class OnboardingService {
@@ -121,5 +122,24 @@ export class OnboardingService {
       requestBody,
     );
     return depositResponse;
+  }
+
+  async withdrawAccount(request: { accountId: string; amount: string }) {
+    const { idempotency_key } = this.headerService.headers;
+
+    const requestBody: CreateWithdrawDto = {
+      amount: request.amount,
+      notes: 'Withdraw standard service',
+      transactionDetails: {
+        transactionChannelId: 'OnlineChannelLocales',
+      },
+      paymentOrderId: idempotency_key,
+      externalId: idempotency_key,
+    };
+    const withdrawResponse = await this.transactionService.makeWithdraw(
+      request.accountId,
+      requestBody,
+    );
+    return withdrawResponse;
   }
 }
