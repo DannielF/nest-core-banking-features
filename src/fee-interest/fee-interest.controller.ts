@@ -2,11 +2,22 @@ import { Controller, Post, Body, Param, Query } from '@nestjs/common';
 import { FeeInterestService } from './fee-interest.service';
 import { CreateApplyInterest } from './dto/create-fee-interest.dto';
 import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('fee-interest')
 @Controller('fee-interest')
 export class FeeInterestController {
   constructor(private readonly feeInterestService: FeeInterestService) {}
 
+  @ApiOperation({ summary: 'Force apply interest' })
+  @ApiParam({ name: 'depositAccountId', type: 'string', required: true })
+  @ApiBody({ type: CreateApplyInterest, required: true })
   @Post('deposits/:depositAccountId')
   depositInterest(
     @Param('depositAccountId') id: string,
@@ -15,6 +26,12 @@ export class FeeInterestController {
     return this.feeInterestService.forceApplyInterest(id, createFeeInterestDto);
   }
 
+  @ApiOperation({ summary: 'Get all interest accrual' })
+  @ApiBody({ type: CreateInterestAccrualDto, required: true })
+  @ApiQuery({ name: 'offset', type: 'string', required: false })
+  @ApiQuery({ name: 'limit', type: 'string', required: false })
+  @ApiQuery({ name: 'paginationDetails', type: 'string', required: false })
+  @ApiQuery({ name: 'detailsLevel', type: 'string', required: false })
   @Post('interest-accrual')
   interestAccrual(
     @Body() createFeeInterestDto: CreateInterestAccrualDto,

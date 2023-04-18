@@ -20,6 +20,6 @@ export class OnboardingClientDTO {
   idProduct: string;
   @ApiProperty({ example: 'CLIENT' })
   holderType: string;
-  @ApiProperty({ example: 'extraField: lorem ipsup' })
+  @ApiProperty({ type: Personalization })
   _personalizados: Personalization;
 }

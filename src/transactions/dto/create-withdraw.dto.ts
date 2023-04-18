@@ -1,4 +1,4 @@
-export interface CreateWithdrawDto {
+export class CreateWithdrawDto {
   amount: string;
   transactionDetails: TransactionDetails;
   notes: string;
@@ -6,6 +6,6 @@ export interface CreateWithdrawDto {
   externalId: string;
 }
 
-interface TransactionDetails {
+class TransactionDetails {
   transactionChannelId: string;
 }

@@ -1,11 +1,17 @@
-export interface CreateDepositDto {
-  amount: string;
-  transactionDetails: TransactionDetails;
-  notes: string;
-  paymentOrderId: string;
-  externalId: string;
-}
+import { ApiProperty } from '@nestjs/swagger';
 
-interface TransactionDetails {
+class TransactionDetails {
   transactionChannelId: string;
+}
+export class CreateDepositDto {
+  @ApiProperty({ example: '1000' })
+  amount: string;
+  @ApiProperty({ example: 'transactionChannelId: cash' })
+  transactionDetails: TransactionDetails;
+  @ApiProperty({ example: 'deposit' })
+  notes: string;
+  @ApiProperty({ example: 'UUID' })
+  paymentOrderId: string;
+  @ApiProperty({ example: 'UUID' })
+  externalId: string;
 }
