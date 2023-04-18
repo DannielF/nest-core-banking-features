@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { AccountService } from 'src/accounts/account.service';
 import { BlockSeizureService } from 'src/block-seizures/block-seizures.service';
+import { CreateAccountChangeStateDto } from 'src/block-seizures/dto/create-account-change-state.dto';
 import { CreateBlockFundsDto } from 'src/block-seizures/dto/create-block-funds.dto';
 import { CreateSeizureFundsDto } from 'src/block-seizures/dto/create-siezure-funds.dto';
 import { ClientService } from 'src/clients/client.service';
 import { HeaderService } from 'src/config/header/header.config';
 import { CreateApplyInterest } from 'src/fee-interest/dto/create-fee-interest.dto';
 import { FeeInterestService } from 'src/fee-interest/fee-interest.service';
-import { TransactionsService } from 'src/transactions/transactions.service';
-import { OnboardingClientDTO } from './dto/onboarding-client.dto';
-import { CreateAccountChangeStateDto } from 'src/block-seizures/dto/create-account-change-state.dto';
 import { CreateDepositDto } from 'src/transactions/dto/create-deposit.dto';
 import { CreateWithdrawDto } from 'src/transactions/dto/create-withdraw.dto';
+import { TransactionsService } from 'src/transactions/transactions.service';
+import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 
 @Injectable()
 export class OnboardingService {

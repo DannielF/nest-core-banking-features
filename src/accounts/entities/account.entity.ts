@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class Account {
   private accountHolderKey: string;
   private accountHolderType: string;
