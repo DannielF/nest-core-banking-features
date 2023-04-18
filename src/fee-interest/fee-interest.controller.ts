@@ -10,7 +10,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-@ApiTags('fee-interest')
+@ApiTags('Fee-interest')
 @Controller('fee-interest')
 export class FeeInterestController {
   constructor(private readonly feeInterestService: FeeInterestService) {}

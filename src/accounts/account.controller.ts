@@ -12,7 +12,7 @@ import {
 import { ResponseGetProductEntity } from './entities/response-get-product.entity';
 import { ResponseCreateAccountEntity } from './entities/response-create-account.entity';
 
-@ApiTags('accounts')
+@ApiTags('Accounts')
 @Controller('accounts')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}

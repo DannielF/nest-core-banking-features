@@ -5,7 +5,7 @@ import { CreateSeizureFundsDto } from './dto/create-siezure-funds.dto';
 import { CreateAccountChangeStateDto } from './dto/create-account-change-state.dto';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('block-seizures')
+@ApiTags('Block-seizures')
 @Controller('block-seizures')
 export class BlockSeizuresController {
   constructor(private readonly blockSeizureService: BlockSeizureService) {}

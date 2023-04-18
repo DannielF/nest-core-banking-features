@@ -3,7 +3,7 @@ import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('clients')
+@ApiTags('Clients')
 @Controller('clients')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
