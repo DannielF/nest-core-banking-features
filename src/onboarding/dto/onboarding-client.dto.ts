@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+class Personalization {
+  @ApiProperty({ example: 'UUID' })
+  External_ID: string;
+}
+
 export class OnboardingClientDTO {
   @ApiProperty({ example: 'John' })
   firstName: string;
@@ -17,9 +22,4 @@ export class OnboardingClientDTO {
   holderType: string;
   @ApiProperty({ example: 'extraField: lorem ipsup' })
   _personalizados: Personalization;
-}
-
-class Personalization {
-  @ApiProperty({ example: 'UUID' })
-  External_ID: string;
 }
