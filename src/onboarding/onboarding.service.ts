@@ -81,7 +81,9 @@ export class OnboardingService {
 
   async payInterestAccrued(request: { accountId: string }) {
     const currentDate: Date = new Date();
-    const dateString: string = currentDate.toISOString().replace('Z', '-05:00');
+    const dateString: string = currentDate
+      .toISOString()
+      .replace(/\.\d+Z$/, '-05:00');
 
     const requestInterest: CreateApplyInterest = {
       interestApplicationDate: dateString,
