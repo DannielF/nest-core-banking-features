@@ -1,8 +1,8 @@
 import { DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 
 export const config = new DocumentBuilder()
-  .setTitle('Mambu implementation API')
-  .setDescription('Client operations API')
+  .setTitle('Core banking API')
+  .setDescription('Standard operations for core banking')
   .setVersion('1.0')
   .setLicense('MIT', 'https://opensource.org/licenses/MIT')
   .build();
