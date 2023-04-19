@@ -79,9 +79,12 @@ export class OnboardingService {
     return { responseBlock, responseSeizure };
   }
 
-  async payInterestAccrued(request: { accountId: string; date: string }) {
+  async payInterestAccrued(request: { accountId: string }) {
+    const currentDate: Date = new Date();
+    const dateString: string = currentDate.toISOString().replace('Z', '-05:00');
+
     const requestInterest: CreateApplyInterest = {
-      interestApplicationDate: request.date,
+      interestApplicationDate: dateString,
       notes: 'Pay interest standard service',
     };
 

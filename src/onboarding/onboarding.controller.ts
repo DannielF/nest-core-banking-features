@@ -34,9 +34,9 @@ export class OnboardingController {
   }
 
   @ApiOperation({ summary: 'Pay interest accrued' })
-  @ApiBody({ required: true, description: 'accountId, date' })
+  @ApiBody({ required: true, description: 'accountId' })
   @Post('pay-interest')
-  payInterestAccrued(@Body() request: { accountId: string; date: string }) {
+  payInterestAccrued(@Body() request: { accountId: string }) {
     return this.onboardingService.payInterestAccrued(request);
   }
 
