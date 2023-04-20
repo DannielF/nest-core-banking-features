@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateDepositDto } from './dto/create-deposit.dto';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { SearchFilterDTO } from './dto/create-search-filter.dto';
@@ -9,27 +14,59 @@ export class TransactionsService {
   constructor(private readonly headerService: HeaderService) {}
 
   async makeDeposit(id: string, createTransactionDto: CreateDepositDto) {
-    const response = await fetch(
+    return await fetch(
       `${this.headerService.baseUrl}/deposits/${id}/deposit-transactions`,
       {
         method: 'POST',
         headers: this.headerService.headers,
         body: JSON.stringify(createTransactionDto),
       },
-    );
-    return await response.json();
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
   }
 
   async makeWithdraw(id: string, createTransactionDto: CreateWithdrawDto) {
-    const response = await fetch(
+    return await fetch(
       `${this.headerService.baseUrl}/deposits/${id}/withdrawal-transactions`,
       {
         method: 'POST',
         headers: this.headerService.headers,
         body: JSON.stringify(createTransactionDto),
       },
-    );
-    return await response.json();
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
   }
 
   async transactionsClient(
@@ -47,27 +84,56 @@ export class TransactionsService {
       detailsLevel: detailsLevel ?? 'BASIC',
     }).toString();
 
-    const response = await fetch(
+    return await fetch(
       `${this.headerService.baseUrl}/deposits/${depositAccountId}/transactions?${queryParams}`,
       {
         method: 'GET',
         headers: { Accept, Authorization },
       },
-    );
-    return await response.json();
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
   }
 
   async searchDeposits(createTransactionDto: SearchFilterDTO) {
     const { Accept, Authorization } = this.headerService.headers;
-    const response = await fetch(
-      `${this.headerService.baseUrl}/deposits/search`,
-      {
-        method: 'POST',
-        headers: { Accept, Authorization, 'Content-Type': 'application/json' },
-        body: JSON.stringify(createTransactionDto),
-      },
-    );
-    return await response.json();
+    return await fetch(`${this.headerService.baseUrl}/deposits:search`, {
+      method: 'POST',
+      headers: { Accept, Authorization, 'Content-Type': 'application/json' },
+      body: JSON.stringify(createTransactionDto),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
   }
 
   async transactions(
@@ -85,14 +151,30 @@ export class TransactionsService {
     }).toString();
 
     const { Accept, Authorization } = this.headerService.headers;
-    const response = await fetch(
+    return await fetch(
       `${this.headerService.baseUrl}/deposits/transactions:search?${queryParams}`,
       {
         method: 'POST',
         headers: { Accept, Authorization, 'Content-Type': 'application/json' },
         body: JSON.stringify(createTransactionDto),
       },
-    );
-    return await response.json();
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
   }
 }
