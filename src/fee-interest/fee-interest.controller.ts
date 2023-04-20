@@ -1,7 +1,12 @@
-import { Controller, Post, Body, Param, Query } from '@nestjs/common';
-import { FeeInterestService } from './fee-interest.service';
-import { CreateApplyInterest } from './dto/create-fee-interest.dto';
-import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiOperation,
@@ -9,6 +14,9 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { CreateApplyInterest } from './dto/create-fee-interest.dto';
+import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
+import { FeeInterestService } from './fee-interest.service';
 
 @ApiTags('Fee-interest')
 @Controller('fee-interest')
@@ -19,11 +27,28 @@ export class FeeInterestController {
   @ApiParam({ name: 'depositAccountId', type: 'string', required: true })
   @ApiBody({ type: CreateApplyInterest, required: true })
   @Post('deposits/:depositAccountId')
-  depositInterest(
+  async depositInterest(
     @Param('depositAccountId') id: string,
     @Body() createFeeInterestDto: CreateApplyInterest,
   ) {
-    return this.feeInterestService.forceApplyInterest(id, createFeeInterestDto);
+    return await this.feeInterestService
+      .forceApplyInterest(id, createFeeInterestDto)
+      .then((response) => {
+        if (response.errors) {
+          throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
   }
 
   @ApiOperation({ summary: 'Get all interest accrual' })
@@ -33,19 +58,36 @@ export class FeeInterestController {
   @ApiQuery({ name: 'paginationDetails', type: 'string', required: false })
   @ApiQuery({ name: 'detailsLevel', type: 'string', required: false })
   @Post('interest-accrual')
-  interestAccrual(
+  async interestAccrual(
     @Body() createFeeInterestDto: CreateInterestAccrualDto,
     @Query('offset') offset?: string,
     @Query('limit') limit?: string,
     @Query('paginationDetails') paginationDetails?: string,
     @Query('detailsLevel') detailsLevel?: string,
   ) {
-    return this.feeInterestService.AllInterestAccrual(
-      createFeeInterestDto,
-      offset,
-      limit,
-      paginationDetails,
-      detailsLevel,
-    );
+    return await this.feeInterestService
+      .AllInterestAccrual(
+        createFeeInterestDto,
+        offset,
+        limit,
+        paginationDetails,
+        detailsLevel,
+      )
+      .then((response) => {
+        if (response.errors) {
+          throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
   }
 }

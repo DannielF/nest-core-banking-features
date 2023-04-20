@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { HeaderService } from 'src/config/header/header.config';
 import { CreateApplyInterest } from './dto/create-fee-interest.dto';
 import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
-import { HeaderService } from 'src/config/header/header.config';
 
 @Injectable()
 export class FeeInterestService {
