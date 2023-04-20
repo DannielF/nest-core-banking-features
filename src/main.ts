@@ -4,7 +4,10 @@ import { AppModule } from './app.module';
 
 import { Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { config as swaggerConfig } from './config/swaggerConfig/swaggerConfig';
+import {
+  options,
+  config as swaggerConfig,
+} from './config/swaggerConfig/swaggerConfig';
 
 async function bootstrap() {
   const logger = new Logger('bootstrap');
@@ -12,10 +15,11 @@ async function bootstrap() {
     cors: true,
   });
 
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  const document = SwaggerModule.createDocument(app, swaggerConfig, options);
   SwaggerModule.setup('api', app, document);
 
   app.setGlobalPrefix('api/v1');
+
   await app.listen(process.env.PORT || 3000);
   logger.log(`Application listening on port ${process.env.PORT}`);
 }

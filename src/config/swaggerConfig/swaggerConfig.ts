@@ -1,4 +1,5 @@
 import { DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
+import { ErrorResponse } from 'src/common/models/error-response.entity';
 
 export const config = new DocumentBuilder()
   .setTitle('Core banking API')
@@ -9,4 +10,5 @@ export const config = new DocumentBuilder()
 
 export const options: SwaggerDocumentOptions = {
   operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+  extraModels: [ErrorResponse],
 };
