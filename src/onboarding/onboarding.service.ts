@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AccountService } from 'src/accounts/account.service';
 import { BlockSeizureService } from 'src/block-seizures/block-seizures.service';
 import { CreateAccountChangeStateDto } from 'src/block-seizures/dto/create-account-change-state.dto';
@@ -26,57 +26,85 @@ export class OnboardingService {
 
   async createClient(request: OnboardingClientDTO) {
     const { idProduct, ...client } = request;
+    try {
+      const clientResponse = await this.clientService.create(client);
+      const productInfo = await this.accountService.getEcodedProduct(idProduct);
 
-    const clientResponse = await this.clientService.create(client);
-    const productInfo = await this.accountService.getEcodedProduct(idProduct);
+      const accountResponse = await this.accountService.createDeposit({
+        accountHolderKey: clientResponse.encodedKey,
+        accountHolderType: client.holderType,
+        name: `${clientResponse.firstName} ${clientResponse.lastName}`,
+        productTypeKey: productInfo.encodedKey,
+        accountType: productInfo.type,
+        currencyCode: productInfo.currencySettings.currencies[0].currencyCode,
+      });
 
-    const accountResponse = await this.accountService.createDeposit({
-      accountHolderKey: clientResponse.encodedKey,
-      accountHolderType: client.holderType,
-      name: `${clientResponse.firstName} ${clientResponse.lastName}`,
-      productTypeKey: productInfo.encodedKey,
-      accountType: productInfo.type,
-      currencyCode: productInfo.currencySettings.currencies[0].currencyCode,
-    });
-
-    return { clientResponse, accountResponse };
+      return { clientResponse, accountResponse };
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
   }
 
   async lastTransactions(depositAccountId: string, limit: string) {
-    const response = await this.transactionService.transactionsClient(
-      depositAccountId,
-      '0',
-      limit,
-      'OFF',
-      'BASIC',
-    );
-    return response;
+    try {
+      const response = await this.transactionService.transactionsClient(
+        depositAccountId,
+        '0',
+        limit,
+        'OFF',
+        'BASIC',
+      );
+      return response;
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
   }
 
   async blockFunds(request: { accountId: string; amount: string }) {
     const { idempotency_key } = this.headerService.headers;
+    try {
+      const requestBlock: CreateBlockFundsDto = {
+        amount: request.amount,
+        externalReferenceId: idempotency_key,
+        notes: 'Block funds standard service',
+      };
+      const responseBlock = await this.blockSeizureService.blockFunds(
+        request.accountId,
+        requestBlock,
+      );
 
-    const requestBlock: CreateBlockFundsDto = {
-      amount: request.amount,
-      externalReferenceId: idempotency_key,
-      notes: 'Block funds standard service',
-    };
-    const responseBlock = await this.blockSeizureService.blockFunds(
-      request.accountId,
-      requestBlock,
-    );
-
-    const requestSeizure: CreateSeizureFundsDto = {
-      amount: request.amount,
-      blockId: responseBlock.externalReferenceId,
-      notes: 'Seizure funds standard service',
-      transactionChannelId: 'cash',
-    };
-    const responseSeizure = await this.blockSeizureService.seizureFunds(
-      request.accountId,
-      requestSeizure,
-    );
-    return { responseBlock, responseSeizure };
+      const requestSeizure: CreateSeizureFundsDto = {
+        amount: request.amount,
+        blockId: responseBlock.externalReferenceId,
+        notes: 'Seizure funds standard service',
+        transactionChannelId: 'cash',
+      };
+      const responseSeizure = await this.blockSeizureService.seizureFunds(
+        request.accountId,
+        requestSeizure,
+      );
+      return { responseBlock, responseSeizure };
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
   }
 
   async payInterestAccrued(request: { accountId: string }) {
@@ -84,30 +112,49 @@ export class OnboardingService {
     const dateString: string = currentDate
       .toISOString()
       .replace(/\.\d+Z$/, '-05:00');
+    try {
+      const requestInterest: CreateApplyInterest = {
+        interestApplicationDate: dateString,
+        notes: 'Pay interest standard service',
+      };
 
-    const requestInterest: CreateApplyInterest = {
-      interestApplicationDate: dateString,
-      notes: 'Pay interest standard service',
-    };
-
-    const response = await this.feeInterestService.forceApplyInterest(
-      request.accountId,
-      requestInterest,
-    );
-    return response;
+      const response = await this.feeInterestService.forceApplyInterest(
+        request.accountId,
+        requestInterest,
+      );
+      return response;
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
   }
 
   async blockAccount(request: { accountId: string }) {
     const requestBlockAccount: CreateAccountChangeStateDto = {
-      action: 'BLOCK',
+      action: 'LOCK',
       notes: 'Block account standard service',
     };
-    const responseBlockAccount =
-      await this.blockSeizureService.accountChangeState(
-        request.accountId,
-        requestBlockAccount,
+    try {
+      const responseBlockAccount =
+        await this.blockSeizureService.accountChangeState(
+          request.accountId,
+          requestBlockAccount,
+        );
+      return responseBlockAccount;
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
       );
-    return responseBlockAccount;
+    }
   }
 
   async depositAccount(request: { accountId: string; amount: string }) {
@@ -122,11 +169,21 @@ export class OnboardingService {
       paymentOrderId: idempotency_key,
       externalId: idempotency_key,
     };
-    const depositResponse = await this.transactionService.makeDeposit(
-      request.accountId,
-      requestBody,
-    );
-    return depositResponse;
+    try {
+      const depositResponse = await this.transactionService.makeDeposit(
+        request.accountId,
+        requestBody,
+      );
+      return depositResponse;
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
   }
 
   async withdrawAccount(request: { accountId: string; amount: string }) {
@@ -141,10 +198,20 @@ export class OnboardingService {
       paymentOrderId: idempotency_key,
       externalId: idempotency_key,
     };
-    const withdrawResponse = await this.transactionService.makeWithdraw(
-      request.accountId,
-      requestBody,
-    );
-    return withdrawResponse;
+    try {
+      const withdrawResponse = await this.transactionService.makeWithdraw(
+        request.accountId,
+        requestBody,
+      );
+      return withdrawResponse;
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
   }
 }
