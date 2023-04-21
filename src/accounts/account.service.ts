@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create-account.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HeaderService } from 'src/config/header/header.config';
-import { ResponseGetProductEntity } from './entities/response-get-product.entity';
+import { CreateAccountDto } from './dto/create-account.dto';
 import { ResponseCreateAccountEntity } from './entities/response-create-account.entity';
+import { ResponseGetProductEntity } from './entities/response-get-product.entity';
 
 @Injectable()
 export class AccountService {
@@ -11,12 +11,28 @@ export class AccountService {
   async createDeposit(
     createAccountDto: CreateAccountDto,
   ): Promise<ResponseCreateAccountEntity> {
-    const response = await fetch(`${this.headerService.baseUrl}/deposits`, {
+    return await fetch(`${this.headerService.baseUrl}/deposits`, {
       method: 'POST',
       headers: this.headerService.headers,
       body: JSON.stringify(createAccountDto),
-    });
-    return await response.json();
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.errors) {
+          throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            action: 'Check the data sent to the endpoint',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
   }
 
   async getEcodedProduct(
@@ -34,13 +50,29 @@ export class AccountService {
     }).toString();
 
     const { Accept, Authorization } = this.headerService.headers;
-    const response = await fetch(
+    return await fetch(
       `${this.headerService.baseUrl}/depositproducts/${Idproduct}?${queryParams}`,
       {
         method: 'GET',
         headers: { Accept, Authorization },
       },
-    );
-    return await response.json();
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.errors) {
+          throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            action: 'Check the params sent to the endpoint',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
   }
 }
