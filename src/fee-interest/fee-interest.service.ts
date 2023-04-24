@@ -19,7 +19,12 @@ export class FeeInterestService {
         body: JSON.stringify(createFeeInterestDto),
       },
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 204) {
+          return { message: 'Interest applied successfully' };
+        }
+        return response.json();
+      })
       .then((response) => {
         if (response.errors) {
           throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);

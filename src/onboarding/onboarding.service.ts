@@ -36,6 +36,7 @@ export class OnboardingService {
         name: `${clientResponse.firstName} ${clientResponse.lastName}`,
         productTypeKey: productInfo.encodedKey,
         accountType: productInfo.type,
+        accountState: 'APPROVED',
         currencyCode: productInfo.currencySettings.currencies[0].currencyCode,
       });
 
