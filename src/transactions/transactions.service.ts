@@ -8,6 +8,7 @@ import { CreateDepositDto } from './dto/create-deposit.dto';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { SearchFilterDTO } from './dto/create-search-filter.dto';
 import { HeaderService } from 'src/config/header/header.config';
+import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -185,6 +186,42 @@ export class TransactionsService {
       {
         method: 'GET',
         headers: { Accept, Authorization },
+      },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
+  }
+
+  async makeLoanDisbursement(loanAccountId: string, body: DisbursementLoanDto) {
+    const request = {
+      externalId: this.headerService.headers.idempotency_key,
+      transactionDetails: {
+        transactionChannelId: 'OnlineChannelLocales',
+      },
+      ...body,
+    };
+
+    await fetch(
+      `${this.headerService.baseUrl}/loans/${loanAccountId}/disbursement-transactions`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
+        body: JSON.stringify(request),
       },
     )
       .then((response) => response.json())

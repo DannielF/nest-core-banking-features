@@ -10,6 +10,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -96,5 +97,16 @@ export class TransactionsController {
   @Get('loan-installments/:loanAccountId')
   getLoanInstallments(@Param('loanAccountId') id: string) {
     return this.transactionsService.loanInstallments(id);
+  }
+
+  @ApiOperation({ summary: 'Loan disbursement' })
+  @ApiParam({ name: 'loanAccountId', type: 'string', required: true })
+  @ApiBody({ type: DisbursementLoanDto })
+  @Post('loan-disbursement/:loanAccountId')
+  disbursementLoan(
+    @Param('loanAccountId') id: string,
+    @Body() body: DisbursementLoanDto,
+  ) {
+    return this.transactionsService.makeLoanDisbursement(id, body);
   }
 }
