@@ -56,4 +56,11 @@ export class AccountController {
       detailsLevel,
     );
   }
+
+  @ApiOperation({ summary: 'Get loan product info' })
+  @ApiParam({ name: 'loanProductId', type: 'string', required: true })
+  @Get('loanproducts/:loanProductId')
+  loanProductInfo(@Param('loanProductId') id: string) {
+    return this.accountService.getLoanProductInfo(id);
+  }
 }

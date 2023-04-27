@@ -75,4 +75,32 @@ export class AccountService {
         );
       });
   }
+
+  async getLoanProductInfo(loanProductId: string) {
+    const { Accept, Authorization } = this.headerService.headers;
+    return await fetch(
+      `${this.headerService.baseUrl}/loanproducts/${loanProductId}?detailsLevel=FULL`,
+      {
+        method: 'GET',
+        headers: { Accept, Authorization },
+      },
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.errors) {
+          throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            action: 'Check the params sent to the endpoint',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
+  }
 }
