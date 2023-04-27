@@ -90,4 +90,11 @@ export class TransactionsController {
       detailsLevel,
     );
   }
+
+  @ApiOperation({ summary: 'All loan installments' })
+  @ApiParam({ name: 'loanAccountId', type: 'string', required: true })
+  @Get('loan-installments/:loanAccountId')
+  getLoanInstallments(@Param('loanAccountId') id: string) {
+    return this.transactionsService.loanInstallments(id);
+  }
 }
