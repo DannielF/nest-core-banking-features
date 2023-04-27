@@ -80,15 +80,8 @@ export class AccountController {
 
   @ApiOperation({ summary: 'Approve a loan' })
   @ApiParam({ name: 'loanAccountId', type: 'string', required: true })
-  @ApiBody({
-    description: '{ action: string, notes: string }',
-    required: true,
-  })
   @Post('loans/:loanAccountId/approve')
-  aproveLoan(
-    @Param('loanAccountId') id: string,
-    @Body() request: { action: string; notes: string },
-  ) {
-    return this.accountService.approveLoan(id, request);
+  aproveLoan(@Param('loanAccountId') id: string) {
+    return this.accountService.approveLoan(id);
   }
 }

@@ -132,10 +132,12 @@ export class AccountService {
       });
   }
 
-  async approveLoan(
-    loanAccountId: string,
-    request: { action: string; notes: string },
-  ) {
+  async approveLoan(loanAccountId: string) {
+    const request = {
+      action: 'APPROVE',
+      notes: 'Loan approved by API',
+    };
+
     return await fetch(
       `${this.headerService.baseUrl}/loans/${loanAccountId}:changeState`,
       {
