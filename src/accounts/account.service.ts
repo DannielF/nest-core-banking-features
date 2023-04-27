@@ -3,6 +3,9 @@ import { HeaderService } from 'src/config/header/header.config';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { ResponseCreateAccountEntity } from './entities/response-create-account.entity';
 import { ResponseGetProductEntity } from './entities/response-get-product.entity';
+import { CreateLoanDto } from './dto/create-loan.dto';
+import { ResponseLoanCreated } from './entities/loan-created.entity';
+import { LoanProductInfo } from './entities/get-loanproduct-info.entity';
 
 @Injectable()
 export class AccountService {
@@ -15,6 +18,31 @@ export class AccountService {
       method: 'POST',
       headers: this.headerService.headers,
       body: JSON.stringify(createAccountDto),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.errors) {
+          throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            action: 'Check the data sent to the endpoint',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
+  }
+
+  async createLoan(createLoanDto: CreateLoanDto): Promise<ResponseLoanCreated> {
+    return await fetch(`${this.headerService.baseUrl}/loans`, {
+      method: 'POST',
+      headers: this.headerService.headers,
+      body: JSON.stringify(createLoanDto),
     })
       .then((response) => response.json())
       .then((response) => {
@@ -76,7 +104,7 @@ export class AccountService {
       });
   }
 
-  async getLoanProductInfo(loanProductId: string) {
+  async getLoanProductInfo(loanProductId: string): Promise<LoanProductInfo> {
     const { Accept, Authorization } = this.headerService.headers;
     return await fetch(
       `${this.headerService.baseUrl}/loanproducts/${loanProductId}?detailsLevel=FULL`,

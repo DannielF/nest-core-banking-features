@@ -11,6 +11,8 @@ import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { ResponseCreateAccountEntity } from './entities/response-create-account.entity';
 import { ResponseGetProductEntity } from './entities/response-get-product.entity';
+import { CreateLoanDto } from './dto/create-loan.dto';
+import { ResponseLoanCreated } from './entities/loan-created.entity';
 
 @ApiTags('Accounts')
 @Controller('accounts')
@@ -27,6 +29,18 @@ export class AccountController {
   @Post('deposits')
   deposit(@Body() createAccountDto: CreateAccountDto) {
     return this.accountService.createDeposit(createAccountDto);
+  }
+
+  @ApiOperation({ summary: 'Create a loan account' })
+  @ApiResponse({
+    status: 201,
+    description: 'The loan has been successfully created.',
+    type: ResponseLoanCreated,
+  })
+  @ApiBody({ type: CreateLoanDto, required: true })
+  @Post('loans')
+  loan(@Body() createLoanDto: CreateLoanDto) {
+    return this.accountService.createLoan(createLoanDto);
   }
 
   @ApiOperation({ summary: 'Get ecoded for a product' })
