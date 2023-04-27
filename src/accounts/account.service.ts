@@ -131,4 +131,35 @@ export class AccountService {
         );
       });
   }
+
+  async approveLoan(
+    loanAccountId: string,
+    request: { action: string; notes: string },
+  ) {
+    return await fetch(
+      `${this.headerService.baseUrl}/loans/${loanAccountId}:changeState`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
+        body: JSON.stringify(request),
+      },
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.errors) {
+          throw new HttpException(response.errors, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            action: 'Check the params sent to the endpoint',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
+  }
 }
