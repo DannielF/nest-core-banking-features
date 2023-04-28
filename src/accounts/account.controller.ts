@@ -109,4 +109,27 @@ export class AccountController {
   ) {
     return this.accountService.lockLoan(body);
   }
+
+  @ApiOperation({ summary: 'Unlock a loan' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          notes: 'notes',
+          loanAccountId: 'loanAccountId',
+        },
+      },
+    },
+  })
+  @Post('loans-unlock')
+  unlockLoan(
+    @Body()
+    body: {
+      notes: string;
+      loanAccountId: string;
+    },
+  ) {
+    return this.accountService.unlockLoan(body);
+  }
 }
