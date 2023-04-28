@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HeaderService } from 'src/config/header/header.config';
 import { CreateApplyInterest } from './dto/create-fee-interest.dto';
 import { CreateInterestAccrualDto } from './dto/create-interest-accrual.dto';
+import { CurrentDateISO } from 'src/common/get-current-date';
 
 @Injectable()
 export class FeeInterestService {
@@ -88,15 +89,10 @@ export class FeeInterestService {
     notes: string;
     loanAccountId: string;
   }) {
-    const currentDate: Date = new Date();
-    const newDateTime: Date = new Date(currentDate.getTime() - 1 * 1000);
-    const dateString: string = newDateTime
-      .toISOString()
-      .replace(/\.\d+Z$/, '-05:00');
     const request = {
       interestRate: body.interest,
       notes: body.notes,
-      valueDate: dateString,
+      valueDate: CurrentDateISO.get(),
     };
     return await fetch(
       `${this.headerService.baseUrl}/loans/${body.loanAccountId}:changeInterestRate`,

@@ -4,6 +4,7 @@ import { CreateDepositDto } from './dto/create-deposit.dto';
 import { SearchFilterDTO } from './dto/create-search-filter.dto';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
+import { CurrentDateISO } from 'src/common/get-current-date';
 
 @Injectable()
 export class TransactionsService {
@@ -376,6 +377,47 @@ export class TransactionsService {
       {
         method: 'POST',
         headers: { Accept, Authorization, 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
+  }
+
+  async payingOffLoan(body: {
+    amount: number;
+    notes: string;
+    loanAccountId: string;
+  }) {
+    const request = {
+      amount: body.amount,
+      externalId: this.headerService.headers.idempotency_key,
+      notes: body.notes,
+      transactionDetails: {
+        transactionChannelId: 'OnlineChannelLocales',
+      },
+      valueDate: CurrentDateISO.get(),
+    };
+    return await fetch(
+      `${this.headerService.baseUrl}/loans/${body.loanAccountId}/withdrawal-transactions`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
         body: JSON.stringify(request),
       },
     )

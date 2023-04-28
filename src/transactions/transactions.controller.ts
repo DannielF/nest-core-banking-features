@@ -156,4 +156,24 @@ export class TransactionsController {
   searchLoanAccount(@Param('loanAccountId') id: string) {
     return this.transactionsService.getLoanAccountById(id);
   }
+
+  @ApiOperation({ summary: 'Paying off a loan' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          amount: 100,
+          notes: 'string',
+          loanAccountId: 'string',
+        },
+      },
+    },
+  })
+  @Post('loans/pay-off')
+  payOffLoan(
+    @Body() body: { amount: number; notes: string; loanAccountId: string },
+  ) {
+    return this.transactionsService.payingOffLoan(body);
+  }
 }

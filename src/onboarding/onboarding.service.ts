@@ -12,6 +12,7 @@ import { CreateDepositDto } from 'src/transactions/dto/create-deposit.dto';
 import { CreateWithdrawDto } from 'src/transactions/dto/create-withdraw.dto';
 import { TransactionsService } from 'src/transactions/transactions.service';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
+import { CurrentDateISO } from 'src/common/get-current-date';
 
 @Injectable()
 export class OnboardingService {
@@ -109,14 +110,9 @@ export class OnboardingService {
   }
 
   async payInterestAccrued(request: { accountId: string }) {
-    const currentDate: Date = new Date();
-    const newDateTime: Date = new Date(currentDate.getTime() - 1 * 1000);
-    const dateString: string = newDateTime
-      .toISOString()
-      .replace(/\.\d+Z$/, '-05:00');
     try {
       const requestInterest: CreateApplyInterest = {
-        interestApplicationDate: dateString,
+        interestApplicationDate: CurrentDateISO.get(),
         notes: 'Pay interest standard service',
       };
 
