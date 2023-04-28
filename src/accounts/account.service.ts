@@ -164,4 +164,40 @@ export class AccountService {
         );
       });
   }
+
+  async lockLoan(body: {
+    operations: string[];
+    notes: string;
+    loanAccountId: string;
+  }) {
+    const request = {
+      lockedOperations: [...body.operations],
+      notes: body.notes,
+    };
+    return await fetch(
+      `${this.headerService.baseUrl}/loans/${body.loanAccountId}/lock-transactions`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
+        body: JSON.stringify(request),
+      },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            action: 'Check the params sent to the endpoint',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: error },
+        );
+      });
+  }
 }

@@ -84,4 +84,29 @@ export class AccountController {
   aproveLoan(@Param('loanAccountId') id: string) {
     return this.accountService.approveLoan(id);
   }
+
+  @ApiOperation({ summary: 'Lock a loan' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          operations: ['APPLY_INTEREST', 'APPLY_PENALTIES', 'APPLY_FEES'],
+          notes: 'notes',
+          loanAccountId: 'loanAccountId',
+        },
+      },
+    },
+  })
+  @Post('loans-lock')
+  lockLoan(
+    @Body()
+    body: {
+      operations: string[];
+      notes: string;
+      loanAccountId: string;
+    },
+  ) {
+    return this.accountService.lockLoan(body);
+  }
 }
