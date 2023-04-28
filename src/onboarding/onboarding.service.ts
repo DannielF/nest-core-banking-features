@@ -110,7 +110,8 @@ export class OnboardingService {
 
   async payInterestAccrued(request: { accountId: string }) {
     const currentDate: Date = new Date();
-    const dateString: string = currentDate
+    const newDateTime: Date = new Date(currentDate.getTime() - 1 * 1000);
+    const dateString: string = newDateTime
       .toISOString()
       .replace(/\.\d+Z$/, '-05:00');
     try {

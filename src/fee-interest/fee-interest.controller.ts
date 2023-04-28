@@ -48,4 +48,24 @@ export class FeeInterestController {
       detailsLevel,
     );
   }
+
+  @ApiOperation({ summary: 'Change loan interest rate' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          loanAccountId: 'abc123',
+          interest: 1,
+          notes: 'Change interest rate',
+        },
+      },
+    },
+  })
+  @Post('loans-change/interest-rate')
+  changeLoanInterestRate(
+    @Body() body: { interest: number; notes: string; loanAccountId: string },
+  ) {
+    return this.feeInterestService.changeLoanInterestRate(body);
+  }
 }
