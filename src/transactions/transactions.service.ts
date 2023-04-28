@@ -238,7 +238,11 @@ export class TransactionsService {
       });
   }
 
-  async disbursementLoanTransactions(body: { from: string; to: string }) {
+  async disbursementLoanTransactions(body: {
+    from: string;
+    to: string;
+    loanAccountKey: string;
+  }) {
     const request = {
       filterCriteria: [
         {
@@ -251,6 +255,15 @@ export class TransactionsService {
           operator: 'BETWEEN',
           value: body.from,
           secondValue: body.to,
+        },
+        {
+          field: 'parentAccountKey',
+          operator: 'EQUALS',
+          value: body.loanAccountKey,
+        },
+        {
+          field: 'adjustmentTransactionKey',
+          operator: 'EMPTY',
         },
       ],
       sortingCriteria: {
@@ -286,7 +299,11 @@ export class TransactionsService {
       });
   }
 
-  async paymentLoanTransactions(body: { from: string; to: string }) {
+  async paymentLoanTransactions(body: {
+    from: string;
+    to: string;
+    loanAccountKey: string;
+  }) {
     const request = {
       filterCriteria: [
         {
@@ -299,6 +316,15 @@ export class TransactionsService {
           operator: 'BETWEEN',
           value: body.from,
           secondValue: body.to,
+        },
+        {
+          field: 'parentAccountKey',
+          operator: 'EQUALS',
+          value: body.loanAccountKey,
+        },
+        {
+          field: 'adjustmentTransactionKey',
+          operator: 'EMPTY',
         },
       ],
       sortingCriteria: {
