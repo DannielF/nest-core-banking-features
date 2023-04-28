@@ -5,6 +5,8 @@ import { SearchFilterDTO } from './dto/create-search-filter.dto';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
 import { CurrentDateISO } from 'src/common/get-current-date';
+import { RefinanceLoanDto } from './dto/refinance-loan.dto';
+import { RescheduleLoanDto } from './dto/reschule-loan.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -415,6 +417,86 @@ export class TransactionsService {
     };
     return await fetch(
       `${this.headerService.baseUrl}/loans/${body.loanAccountId}/withdrawal-transactions`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
+        body: JSON.stringify(request),
+      },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
+  }
+
+  async refinanceLoan(body: RefinanceLoanDto) {
+    const request = {
+      loanAccount: {
+        productTypeKey: body.productTypeKey,
+        disbursementDetails: {
+          firstRepaymentDate: body.firstRepaymentDate,
+        },
+        interestSettings: {
+          interestRate: body.interestRate,
+        },
+        scheduleSettings: {
+          gracePeriod: body.gracePeriod,
+          repaymentInstallments: body.repaymentInstallments,
+        },
+      },
+      topUpAmount: body.topUpAmount,
+    };
+    return await fetch(
+      `${this.headerService.baseUrl}/loans/${body.loanAccountId}:refinance`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
+        body: JSON.stringify(request),
+      },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
+  }
+
+  async rescheduleLoan(body: RescheduleLoanDto) {
+    const request = {
+      loanAccount: {
+        disbursementDetails: {
+          firstRepaymentDate: body.firstRepaymentDate,
+        },
+        productTypeKey: body.productTypeKey,
+      },
+    };
+    return await fetch(
+      `${this.headerService.baseUrl}/loans/${body.loanAccountId}:reschedule`,
       {
         method: 'POST',
         headers: this.headerService.headers,
