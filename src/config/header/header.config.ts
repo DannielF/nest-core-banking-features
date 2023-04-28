@@ -20,6 +20,6 @@ export class HeaderService {
   }
 
   get baseUrl() {
-    return this.configService.get('url');
+    return this.configService.get<string>('url');
   }
 }

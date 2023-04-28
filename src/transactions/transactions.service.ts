@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateDepositDto } from './dto/create-deposit.dto';
-import { CreateWithdrawDto } from './dto/create-withdraw.dto';
-import { SearchFilterDTO } from './dto/create-search-filter.dto';
 import { HeaderService } from 'src/config/header/header.config';
+import { CreateDepositDto } from './dto/create-deposit.dto';
+import { SearchFilterDTO } from './dto/create-search-filter.dto';
+import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
 
 @Injectable()
@@ -211,11 +211,59 @@ export class TransactionsService {
       ...body,
     };
 
-    await fetch(
+    return await fetch(
       `${this.headerService.baseUrl}/loans/${loanAccountId}/disbursement-transactions`,
       {
         method: 'POST',
         headers: this.headerService.headers,
+        body: JSON.stringify(request),
+      },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
+  }
+
+  async disbursementLoanTransactions(body: { from: string; to: string }) {
+    const request = {
+      filterCriteria: [
+        {
+          field: 'type',
+          operator: 'EQUALS',
+          value: 'DISBURSEMENT',
+        },
+        {
+          field: 'creationDate',
+          operator: 'BETWEEN',
+          value: body.from,
+          secondValue: body.to,
+        },
+      ],
+      sortingCriteria: {
+        field: 'creationDate',
+        order: 'DESC',
+      },
+    };
+    const { Accept, Authorization } = this.headerService.headers;
+    return await fetch(
+      `${this.headerService.baseUrl}/loans/transactions:search?detailsLevel=FULL`,
+      {
+        method: 'POST',
+        headers: { Accept, Authorization, 'Content-Type': 'application/json' },
         body: JSON.stringify(request),
       },
     )

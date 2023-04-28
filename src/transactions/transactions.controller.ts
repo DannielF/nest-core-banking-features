@@ -109,4 +109,11 @@ export class TransactionsController {
   ) {
     return this.transactionsService.makeLoanDisbursement(id, body);
   }
+
+  @ApiOperation({ summary: 'Search disbursement transactions' })
+  @ApiBody({ description: '{from: string, to : string}', required: true })
+  @Post('search-disbursements')
+  searchDisbursementTransactions(@Body() body: { from: string; to: string }) {
+    return this.transactionsService.disbursementLoanTransactions(body);
+  }
 }
