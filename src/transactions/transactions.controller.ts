@@ -112,8 +112,16 @@ export class TransactionsController {
 
   @ApiOperation({ summary: 'Search disbursement transactions' })
   @ApiBody({
-    description: '{from: string, to : string, loanAccountKey: string}',
     required: true,
+    examples: {
+      request: {
+        value: {
+          from: '2021-01-01',
+          to: '2021-01-01',
+          loanAccountKey: 'abc123',
+        },
+      },
+    },
   })
   @Post('search-disbursements')
   searchDisbursementTransactions(
@@ -124,13 +132,28 @@ export class TransactionsController {
 
   @ApiOperation({ summary: 'Search payment transactions' })
   @ApiBody({
-    description: '{from: string, to : string, loanAccountKey: string}',
     required: true,
+    examples: {
+      request: {
+        value: {
+          from: '2021-01-01',
+          to: '2021-01-01',
+          loanAccountKey: 'abc123',
+        },
+      },
+    },
   })
   @Post('search-payments')
   searchLoanTransactions(
     @Body() body: { from: string; to: string; loanAccountKey: string },
   ) {
     return this.transactionsService.paymentLoanTransactions(body);
+  }
+
+  @ApiOperation({ summary: 'Search loan account by id' })
+  @ApiParam({ name: 'loanAccountId', type: 'string', required: true })
+  @Get('loans/:loanAccountId')
+  searchLoanAccount(@Param('loanAccountId') id: string) {
+    return this.transactionsService.getLoanAccountById(id);
   }
 }

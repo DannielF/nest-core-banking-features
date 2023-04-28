@@ -359,4 +359,42 @@ export class TransactionsService {
         );
       });
   }
+
+  async getLoanAccountById(loanAccountId: string) {
+    const request = {
+      filterCriteria: [
+        {
+          field: 'id',
+          operator: 'EQUALS',
+          value: loanAccountId,
+        },
+      ],
+    };
+    const { Accept, Authorization } = this.headerService.headers;
+    return await fetch(
+      `${this.headerService.baseUrl}/loans:search?detailsLevel=FULL`,
+      {
+        method: 'POST',
+        headers: { Accept, Authorization, 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
+  }
 }
