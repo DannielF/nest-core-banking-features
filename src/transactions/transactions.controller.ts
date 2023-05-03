@@ -173,9 +173,7 @@ export class TransactionsController {
     },
   })
   @Post('loans:pay-off')
-  payOffLoan(
-    @Body() body: { amount: number; notes: string; loanAccountId: string },
-  ) {
+  payOffLoan(@Body() body: { notes: string; loanAccountId: string }) {
     return this.transactionsService.payingOffLoan(body);
   }
 

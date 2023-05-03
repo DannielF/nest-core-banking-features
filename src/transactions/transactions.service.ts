@@ -401,22 +401,16 @@ export class TransactionsService {
       });
   }
 
-  async payingOffLoan(body: {
-    amount: number;
-    notes: string;
-    loanAccountId: string;
-  }) {
+  async payingOffLoan(body: { notes: string; loanAccountId: string }) {
     const request = {
-      amount: body.amount,
       externalId: this.headerService.headers.idempotency_key,
       notes: body.notes,
       transactionDetails: {
         transactionChannelId: 'OnlineChannelLocales',
       },
-      valueDate: CurrentDateISO.get(),
     };
     return await fetch(
-      `${this.headerService.baseUrl}/loans/${body.loanAccountId}/withdrawal-transactions`,
+      `${this.headerService.baseUrl}/loans/${body.loanAccountId}:payOff`,
       {
         method: 'POST',
         headers: this.headerService.headers,
