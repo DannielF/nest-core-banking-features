@@ -174,12 +174,12 @@ export class AccountService {
 
   async lockLoan(body: {
     operations: string[];
-    notes: string;
+    notes?: string;
     loanAccountId: string;
   }) {
     const request = {
       lockedOperations: [...body.operations],
-      notes: body.notes,
+      notes: body?.notes,
     };
     return await fetch(
       `${this.headerService.baseUrl}/loans/${body.loanAccountId}/lock-transactions`,
@@ -208,9 +208,9 @@ export class AccountService {
       });
   }
 
-  async unlockLoan(body: { notes: string; loanAccountId: string }) {
+  async unlockLoan(body: { notes?: string; loanAccountId: string }) {
     const request = {
-      notes: body.notes,
+      notes: body?.notes,
     };
     return await fetch(
       `${this.headerService.baseUrl}/loans/${body.loanAccountId}/unlock-transactions`,

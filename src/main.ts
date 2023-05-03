@@ -13,6 +13,7 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
+    logger: ['error', 'warn', 'debug', 'verbose', 'log'],
   });
 
   const document = SwaggerModule.createDocument(app, swaggerConfig, options);

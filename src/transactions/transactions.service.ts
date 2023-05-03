@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CurrentDateISO } from 'src/common/get-current-date';
 import { HeaderService } from 'src/config/header/header.config';
 import { CreateDepositDto } from './dto/create-deposit.dto';
 import { SearchFilterDTO } from './dto/create-search-filter.dto';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
-import { CurrentDateISO } from 'src/common/get-current-date';
 import { RefinanceLoanDto } from './dto/refinance-loan.dto';
 import { RescheduleLoanDto } from './dto/reschule-loan.dto';
 
@@ -401,10 +401,10 @@ export class TransactionsService {
       });
   }
 
-  async payingOffLoan(body: { notes: string; loanAccountId: string }) {
+  async payingOffLoan(body: { notes?: string; loanAccountId: string }) {
     const request = {
       externalId: this.headerService.headers.idempotency_key,
-      notes: body.notes,
+      notes: body?.notes,
       transactionDetails: {
         transactionChannelId: 'OnlineChannelLocales',
       },
@@ -417,7 +417,12 @@ export class TransactionsService {
         body: JSON.stringify(request),
       },
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 204) {
+          return { message: 'Loan paid off successfully' };
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.errors) {
           throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
@@ -439,16 +444,17 @@ export class TransactionsService {
   async refinanceLoan(body: RefinanceLoanDto) {
     const request = {
       loanAccount: {
-        productTypeKey: body.productTypeKey,
+        productTypeKey:
+          body.productTypeKey ?? '8a44c9b68220b5140182263c6e27577c',
         disbursementDetails: {
-          firstRepaymentDate: body.firstRepaymentDate,
+          firstRepaymentDate: body.firstRepaymentDate ?? CurrentDateISO.get(),
         },
         interestSettings: {
-          interestRate: body.interestRate,
+          interestRate: body?.interestRate,
         },
         scheduleSettings: {
-          gracePeriod: body.gracePeriod,
-          repaymentInstallments: body.repaymentInstallments,
+          gracePeriod: body?.gracePeriod,
+          repaymentInstallments: body?.repaymentInstallments,
         },
       },
       topUpAmount: body.topUpAmount,
@@ -484,9 +490,10 @@ export class TransactionsService {
     const request = {
       loanAccount: {
         disbursementDetails: {
-          firstRepaymentDate: body.firstRepaymentDate,
+          firstRepaymentDate: body.firstRepaymentDate ?? CurrentDateISO.get(),
         },
-        productTypeKey: body.productTypeKey,
+        productTypeKey:
+          body.productTypeKey ?? '8a44c9b68220b5140182263c6e27577c',
       },
     };
     return await fetch(

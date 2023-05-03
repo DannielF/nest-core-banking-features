@@ -103,7 +103,7 @@ export class AccountController {
     @Body()
     body: {
       operations: string[];
-      notes: string;
+      notes?: string;
       loanAccountId: string;
     },
   ) {
@@ -126,7 +126,7 @@ export class AccountController {
   unlockLoan(
     @Body()
     body: {
-      notes: string;
+      notes?: string;
       loanAccountId: string;
     },
   ) {

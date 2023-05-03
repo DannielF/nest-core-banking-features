@@ -1,18 +1,20 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
-            "name": "Launch via NPM",
+            "type": "node",
             "request": "launch",
-            "runtimeArgs": [
-                "run-script",
-                "start:dev"
-            ],
-            "runtimeExecutable": "npm",
+            "name": "Launch Program",
             "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**"
             ],
-            "type": "node"
+            "program": "${workspaceFolder}/src/main.ts",
+            "preLaunchTask": "tsc: watch - tsconfig.build.json",
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ]
         }
     ]
 }
