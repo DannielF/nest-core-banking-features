@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { OnboardingService } from './onboarding.service';
+import { OnboardingLoanDTO } from './dto/onboarding-loan.dto';
 
 @ApiTags('Standard')
 @Controller('standard')
@@ -59,5 +60,12 @@ export class OnboardingController {
   @Post('withdraw')
   makeWithdraw(@Body() request: { accountId: string; amount: string }) {
     return this.onboardingService.withdrawAccount(request);
+  }
+
+  @ApiOperation({ summary: 'Onboarding client and loan' })
+  @ApiBody({ required: true, type: OnboardingLoanDTO })
+  @Post('onboarding-loan')
+  onboardingLoan(@Body() request: OnboardingLoanDTO) {
+    return this.onboardingService.createClientAndLoan(request);
   }
 }

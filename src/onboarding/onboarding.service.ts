@@ -13,6 +13,8 @@ import { CreateWithdrawDto } from 'src/transactions/dto/create-withdraw.dto';
 import { TransactionsService } from 'src/transactions/transactions.service';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { CurrentDateISO } from 'src/common/get-current-date';
+import { OnboardingLoanDTO } from './dto/onboarding-loan.dto';
+import { CreateLoanDto } from 'src/accounts/dto/create-loan.dto';
 
 @Injectable()
 export class OnboardingService {
@@ -202,6 +204,59 @@ export class OnboardingService {
         requestBody,
       );
       return withdrawResponse;
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
+  }
+
+  async createClientAndLoan(request: OnboardingLoanDTO) {
+    const {
+      interestRate,
+      gracePeriod,
+      repaymentInstallments,
+      loanAmount,
+      penaltyRate,
+    } = request;
+
+    try {
+      const clientBody = {
+        firstName: request.firstName,
+        lastName: request.lastName,
+        documentId: request.documentId,
+        email: request.email,
+        gender: request.gender,
+        holderType: 'CLIENT',
+        _personalizados: {
+          External_ID: this.headerService.headers.idempotency_key,
+        },
+      };
+      const clientResponse = await this.clientService.create(clientBody);
+
+      const loanBody: CreateLoanDto = {
+        accountHolderKey: clientResponse.encodedKey,
+        accountHolderType: 'CLIENT',
+        interestSettings: {
+          interestRate: interestRate,
+        },
+        loanAmount: loanAmount,
+        productTypeKey: '8a44c9b68220b5140182263c6e27577c',
+        scheduleSettings: {
+          gracePeriod: gracePeriod,
+          repaymentInstallments: repaymentInstallments,
+        },
+        penaltySettings: {
+          penaltyRate: penaltyRate,
+        },
+      };
+      const loanResponse = await this.accountService.createLoan(loanBody);
+
+      return { clientResponse, loanResponse };
     } catch (error) {
       throw new HttpException(
         {
