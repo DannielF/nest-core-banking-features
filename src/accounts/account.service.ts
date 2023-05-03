@@ -39,10 +39,17 @@ export class AccountService {
   }
 
   async createLoan(createLoanDto: CreateLoanDto): Promise<ResponseLoanCreated> {
+    const request: CreateLoanDto = {
+      accountHolderType: 'CLIENT',
+      interestSettings: {
+        interestType: 'SIMPLE_INTEREST',
+      },
+      ...createLoanDto,
+    };
     return await fetch(`${this.headerService.baseUrl}/loans`, {
       method: 'POST',
       headers: this.headerService.headers,
-      body: JSON.stringify(createLoanDto),
+      body: JSON.stringify(request),
     })
       .then((response) => response.json())
       .then((response) => {
