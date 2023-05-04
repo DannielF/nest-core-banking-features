@@ -348,4 +348,22 @@ export class OnboardingService {
       );
     }
   }
+
+  async payOffLoan(request: { loanAccountId: string }) {
+    try {
+      return await this.transactionService.payingOffLoan({
+        loanAccountId: request.loanAccountId,
+      });
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
 }

@@ -125,4 +125,20 @@ export class OnboardingController {
   ) {
     return this.onboardingService.changeLoanInterestRate(request);
   }
+
+  @ApiOperation({ summary: 'Pay off a loan' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          loanAccountId: 'SGV123',
+        },
+      },
+    },
+  })
+  @Post('loan/pay-off')
+  payOffLoan(@Body() request: { loanAccountId: string }) {
+    return this.onboardingService.payOffLoan(request);
+  }
 }
