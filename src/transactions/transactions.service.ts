@@ -484,11 +484,11 @@ export class TransactionsService {
             body.firstRepaymentDate ?? CurrentDateISO.getOneWeekAfter(),
         },
         interestSettings: {
-          interestRate: body?.interestRate,
+          interestRate: body.interestRate ?? 15,
         },
         scheduleSettings: {
           gracePeriod: body?.gracePeriod,
-          repaymentInstallments: body?.repaymentInstallments,
+          repaymentInstallments: body.repaymentInstallments ?? 12,
         },
       },
       topUpAmount: body.topUpAmount,
