@@ -172,21 +172,21 @@ export class TransactionsController {
       },
     },
   })
-  @Post('loans:pay-off')
+  @Post('loans/pay-off')
   payOffLoan(@Body() body: { notes?: string; loanAccountId: string }) {
     return this.transactionsService.payingOffLoan(body);
   }
 
   @ApiOperation({ summary: 'Refinance a loan' })
   @ApiBody({ type: RefinanceLoanDto, required: true })
-  @Post('loans:refinance')
+  @Post('loans/refinance')
   refinanceLoan(@Body() body: RefinanceLoanDto) {
     return this.transactionsService.refinanceLoan(body);
   }
 
   @ApiOperation({ summary: 'Reschedule a loan' })
   @ApiBody({ type: RescheduleLoanDto, required: true })
-  @Post('loans:reschedule')
+  @Post('loans/reschedule')
   rescheduleLoan(@Body() body: RescheduleLoanDto) {
     return this.transactionsService.rescheduleLoan(body);
   }
