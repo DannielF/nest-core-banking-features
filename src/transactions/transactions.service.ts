@@ -448,7 +448,7 @@ export class TransactionsService {
     const request = {
       loanAccount: {
         productTypeKey:
-          body.productTypeKey ?? '8a44c9b68220b5140182263c6e27577c',
+          body.productTypeKey ?? this.headerService.loanProductKey,
         disbursementDetails: {
           firstRepaymentDate: body.firstRepaymentDate ?? CurrentDateISO.get(),
         },
@@ -496,7 +496,7 @@ export class TransactionsService {
           firstRepaymentDate: body.firstRepaymentDate ?? CurrentDateISO.get(),
         },
         productTypeKey:
-          body.productTypeKey ?? '8a44c9b68220b5140182263c6e27577c',
+          body.productTypeKey ?? this.headerService.loanProductKey,
       },
     };
     return await fetch(

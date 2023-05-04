@@ -22,4 +22,8 @@ export class HeaderService {
   get baseUrl() {
     return this.configService.get<string>('url');
   }
+
+  get loanProductKey() {
+    return this.configService.get<string>('loanProductTypeKey');
+  }
 }
