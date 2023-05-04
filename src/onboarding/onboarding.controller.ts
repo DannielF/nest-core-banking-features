@@ -99,4 +99,11 @@ export class OnboardingController {
   blockLoan(@Body() request: { operations: string[]; loanAccountId: string }) {
     return this.onboardingService.blockLoanAccount(request);
   }
+
+  @ApiOperation({ summary: 'Get loan account by id' })
+  @ApiParam({ name: 'loanAccountId', type: 'string', required: true })
+  @Get('loan/:loanAccountId')
+  getLoanAccount(@Param('loanAccountId') loanAccountId: string) {
+    return this.onboardingService.getLoanAccount(loanAccountId);
+  }
 }

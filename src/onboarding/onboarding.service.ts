@@ -317,4 +317,17 @@ export class OnboardingService {
       );
     }
   }
+
+  async getLoanAccount(loanAccountId: string) {
+    try {
+      return await this.transactionService.getLoanAccountById(loanAccountId);
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }
