@@ -412,4 +412,24 @@ export class OnboardingService {
       );
     } catch (error) {}
   }
+
+  async getLoanRepayments(request: {
+    from?: string;
+    to?: string;
+    loanAccountKey: string;
+  }) {
+    try {
+      return await this.transactionService.paymentLoanTransactions(request);
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
 }

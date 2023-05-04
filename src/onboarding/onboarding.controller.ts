@@ -177,4 +177,24 @@ export class OnboardingController {
   ) {
     return this.onboardingService.getLoanDisbursements(request);
   }
+
+  @ApiOperation({ summary: 'Get loan payments transactions' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          loanAccountKey: 'SGV123',
+          from: '2021-01-01T00:00:00-05:00',
+          to: '2021-01-01T00:00:00-05:00',
+        },
+      },
+    },
+  })
+  @Post('loan/payments')
+  getLoanPaymentsTransactions(
+    @Body() request: { loanAccountKey: string; from: string; to: string },
+  ) {
+    return this.onboardingService.getLoanRepayments(request);
+  }
 }
