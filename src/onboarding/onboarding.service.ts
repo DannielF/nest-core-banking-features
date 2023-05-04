@@ -281,4 +281,20 @@ export class OnboardingService {
       );
     }
   }
+
+  async disburseLoanAccount(request: { loanAccountId: string }) {
+    try {
+      return await this.transactionService.makeLoanDisbursement(
+        request.loanAccountId,
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
+  }
 }

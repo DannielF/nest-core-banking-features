@@ -75,4 +75,11 @@ export class OnboardingController {
   approveLoan(@Body() request: { loanAccountId: string }) {
     return this.onboardingService.approveLoanAccount(request);
   }
+
+  @ApiOperation({ summary: 'Disbursement a loan' })
+  @ApiBody({ required: true, description: 'loanAccountId' })
+  @Post('disbursement-loan')
+  disbursementLoan(@Body() request: { loanAccountId: string }) {
+    return this.onboardingService.disburseLoanAccount(request);
+  }
 }

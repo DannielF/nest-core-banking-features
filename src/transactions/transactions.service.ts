@@ -205,7 +205,10 @@ export class TransactionsService {
       });
   }
 
-  async makeLoanDisbursement(loanAccountId: string, body: DisbursementLoanDto) {
+  async makeLoanDisbursement(
+    loanAccountId: string,
+    body?: DisbursementLoanDto,
+  ) {
     const request = {
       externalId: this.headerService.headers.idempotency_key,
       transactionDetails: {
