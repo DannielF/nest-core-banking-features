@@ -245,8 +245,8 @@ export class TransactionsService {
   }
 
   async disbursementLoanTransactions(body: {
-    from: string;
-    to: string;
+    from?: string;
+    to?: string;
     loanAccountKey: string;
   }) {
     const request = {
@@ -259,8 +259,8 @@ export class TransactionsService {
         {
           field: 'creationDate',
           operator: 'BETWEEN',
-          value: body.from,
-          secondValue: body.to,
+          value: body.from ?? CurrentDateISO.getPreviousDay(),
+          secondValue: body.to ?? CurrentDateISO.get(),
         },
         {
           field: 'parentAccountKey',
@@ -306,8 +306,8 @@ export class TransactionsService {
   }
 
   async paymentLoanTransactions(body: {
-    from: string;
-    to: string;
+    from?: string;
+    to?: string;
     loanAccountKey: string;
   }) {
     const request = {
@@ -320,8 +320,8 @@ export class TransactionsService {
         {
           field: 'creationDate',
           operator: 'BETWEEN',
-          value: body.from,
-          secondValue: body.to,
+          value: body.from ?? CurrentDateISO.getPreviousDay(),
+          secondValue: body.to ?? CurrentDateISO.get(),
         },
         {
           field: 'parentAccountKey',

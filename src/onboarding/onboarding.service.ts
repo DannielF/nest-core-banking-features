@@ -400,4 +400,16 @@ export class OnboardingService {
       );
     }
   }
+
+  async getLoanDisbursements(request: {
+    from?: string;
+    to?: string;
+    loanAccountKey: string;
+  }) {
+    try {
+      return await this.transactionService.disbursementLoanTransactions(
+        request,
+      );
+    } catch (error) {}
+  }
 }

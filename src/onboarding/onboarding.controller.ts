@@ -157,4 +157,24 @@ export class OnboardingController {
   refinanceLoan(@Body() request: RefinanceLoanDto) {
     return this.onboardingService.refinanceLoan(request);
   }
+
+  @ApiOperation({ summary: 'Get loan disbursement transactions' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          loanAccountKey: 'SGV123',
+          from: '2021-01-01T00:00:00-05:00',
+          to: '2021-01-01T00:00:00-05:00',
+        },
+      },
+    },
+  })
+  @Post('loan/disbursements')
+  getLoanDisbursementTransactions(
+    @Body() request: { loanAccountKey: string; from: string; to: string },
+  ) {
+    return this.onboardingService.getLoanDisbursements(request);
+  }
 }
