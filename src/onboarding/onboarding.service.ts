@@ -297,4 +297,24 @@ export class OnboardingService {
       );
     }
   }
+
+  async blockLoanAccount(request: {
+    loanAccountId: string;
+    operations: string[];
+  }) {
+    try {
+      return await this.accountService.lockLoan({
+        operations: request.operations,
+        loanAccountId: request.loanAccountId,
+      });
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
+  }
 }

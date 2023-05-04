@@ -82,4 +82,21 @@ export class OnboardingController {
   disbursementLoan(@Body() request: { loanAccountId: string }) {
     return this.onboardingService.disburseLoanAccount(request);
   }
+
+  @ApiOperation({ summary: 'Block loan operation' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          operations: ['APPLY_INTEREST', 'APPLY_PENALTIES', 'APPLY_FEES'],
+          loanAccountId: 'UUID',
+        },
+      },
+    },
+  })
+  @Post('block-loan')
+  blockLoan(@Body() request: { operations: string[]; loanAccountId: string }) {
+    return this.onboardingService.blockLoanAccount(request);
+  }
 }
