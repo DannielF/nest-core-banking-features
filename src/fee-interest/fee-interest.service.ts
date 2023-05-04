@@ -86,12 +86,12 @@ export class FeeInterestService {
 
   async changeLoanInterestRate(body: {
     interest: number;
-    notes: string;
+    notes?: string;
     loanAccountId: string;
   }) {
     const request = {
       interestRate: body.interest,
-      notes: body.notes,
+      notes: body?.notes,
       valueDate: CurrentDateISO.get(),
     };
     return await fetch(

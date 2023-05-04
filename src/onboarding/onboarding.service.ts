@@ -327,6 +327,24 @@ export class OnboardingService {
           reason: error.response,
         },
         HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
+  }
+
+  async changeLoanInterestRate(request: {
+    interest: number;
+    loanAccountId: string;
+  }) {
+    try {
+      return await this.feeInterestService.changeLoanInterestRate(request);
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
       );
     }
   }

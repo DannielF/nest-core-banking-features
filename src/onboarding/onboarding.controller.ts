@@ -90,7 +90,7 @@ export class OnboardingController {
       request: {
         value: {
           operations: ['APPLY_INTEREST', 'APPLY_PENALTIES', 'APPLY_FEES'],
-          loanAccountId: 'UUID',
+          loanAccountId: 'SGV123',
         },
       },
     },
@@ -105,5 +105,24 @@ export class OnboardingController {
   @Get('loan/:loanAccountId')
   getLoanAccount(@Param('loanAccountId') loanAccountId: string) {
     return this.onboardingService.getLoanAccount(loanAccountId);
+  }
+
+  @ApiOperation({ summary: 'Change loan interest rate' })
+  @ApiBody({
+    required: true,
+    examples: {
+      request: {
+        value: {
+          interest: 5,
+          loanAccountId: 'SGV123',
+        },
+      },
+    },
+  })
+  @Post('loan/interest-rate')
+  changeLoanInterestRate(
+    @Body() request: { interest: number; loanAccountId: string },
+  ) {
+    return this.onboardingService.changeLoanInterestRate(request);
   }
 }
