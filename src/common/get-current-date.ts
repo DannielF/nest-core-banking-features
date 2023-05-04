@@ -18,4 +18,12 @@ export class CurrentDateISO {
     );
     return previousDay.toISOString().replace(/\.\d+Z$/, '-05:00');
   }
+
+  public static getOneWeekAfter(): string {
+    const currentDateTime: Date = new Date();
+    const newDateTime: Date = new Date(
+      currentDateTime.getTime() + 7 * 24 * 60 * 60 * 1000,
+    );
+    return newDateTime.toISOString().replace(/\.\d+Z$/, '-05:00');
+  }
 }

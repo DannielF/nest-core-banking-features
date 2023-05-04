@@ -446,7 +446,7 @@ export class TransactionsService {
   }
 
   async makeRepayment(request: MakeRepaymentDto) {
-    const body = {};
+    const body = { amount: request.amount, notes: request?.notes };
     return await fetch(
       `${this.headerService.baseUrl}/loans/${request.loanAccountId}/repayment-transactions`,
       {
@@ -480,7 +480,8 @@ export class TransactionsService {
         productTypeKey:
           body.productTypeKey ?? this.headerService.loanProductKey,
         disbursementDetails: {
-          firstRepaymentDate: body.firstRepaymentDate ?? CurrentDateISO.get(),
+          firstRepaymentDate:
+            body.firstRepaymentDate ?? CurrentDateISO.getOneWeekAfter(),
         },
         interestSettings: {
           interestRate: body?.interestRate,
@@ -523,7 +524,8 @@ export class TransactionsService {
     const request = {
       loanAccount: {
         disbursementDetails: {
-          firstRepaymentDate: body.firstRepaymentDate ?? CurrentDateISO.get(),
+          firstRepaymentDate:
+            body.firstRepaymentDate ?? CurrentDateISO.getOneWeekAfter(),
         },
         productTypeKey:
           body.productTypeKey ?? this.headerService.loanProductKey,
