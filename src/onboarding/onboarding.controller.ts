@@ -68,4 +68,11 @@ export class OnboardingController {
   onboardingLoan(@Body() request: OnboardingLoanDTO) {
     return this.onboardingService.createClientAndLoan(request);
   }
+
+  @ApiOperation({ summary: 'Approve a loan account' })
+  @ApiBody({ required: true, description: 'loanAccountId' })
+  @Post('approve-loan')
+  approveLoan(@Body() request: { loanAccountId: string }) {
+    return this.onboardingService.approveLoanAccount(request);
+  }
 }

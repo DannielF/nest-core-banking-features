@@ -267,4 +267,18 @@ export class OnboardingService {
       );
     }
   }
+
+  async approveLoanAccount(request: { loanAccountId: string }) {
+    try {
+      return await this.accountService.approveLoan(request.loanAccountId);
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
+      );
+    }
+  }
 }
