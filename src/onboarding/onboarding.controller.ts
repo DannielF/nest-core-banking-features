@@ -3,6 +3,7 @@ import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { OnboardingService } from './onboarding.service';
 import { OnboardingLoanDTO } from './dto/onboarding-loan.dto';
+import { RescheduleLoanDto } from 'src/transactions/dto/reschule-loan.dto';
 
 @ApiTags('Standard')
 @Controller('standard')
@@ -140,5 +141,12 @@ export class OnboardingController {
   @Post('loan/pay-off')
   payOffLoan(@Body() request: { loanAccountId: string }) {
     return this.onboardingService.payOffLoan(request);
+  }
+
+  @ApiOperation({ summary: 'Reschedule a loan' })
+  @ApiBody({ required: true, type: RescheduleLoanDto })
+  @Post('loan/reschedule')
+  rescheduleLoan(@Body() request: RescheduleLoanDto) {
+    return this.onboardingService.rescheduleLoan(request);
   }
 }

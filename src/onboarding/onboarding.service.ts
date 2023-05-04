@@ -15,6 +15,7 @@ import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { CurrentDateISO } from 'src/common/get-current-date';
 import { OnboardingLoanDTO } from './dto/onboarding-loan.dto';
 import { CreateLoanDto } from 'src/accounts/dto/create-loan.dto';
+import { RescheduleLoanDto } from 'src/transactions/dto/reschule-loan.dto';
 
 @Injectable()
 export class OnboardingService {
@@ -354,6 +355,22 @@ export class OnboardingService {
       return await this.transactionService.payingOffLoan({
         loanAccountId: request.loanAccountId,
       });
+    } catch (error) {
+      throw new HttpException(
+        {
+          reason: error.response,
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async rescheduleLoan(request: RescheduleLoanDto) {
+    try {
+      return await this.transactionService.rescheduleLoan(request);
     } catch (error) {
       throw new HttpException(
         {
