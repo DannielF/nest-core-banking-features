@@ -247,7 +247,7 @@ export class OnboardingService {
           interestRate: interestRate,
         },
         loanAmount: loanAmount,
-        productTypeKey: '8a44c9b68220b5140182263c6e27577c',
+        productTypeKey: this.headerService.loanProductKey,
         scheduleSettings: {
           gracePeriod: gracePeriod,
           repaymentInstallments: repaymentInstallments,
