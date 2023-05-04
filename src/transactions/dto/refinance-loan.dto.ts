@@ -10,7 +10,7 @@ export class RefinanceLoanDto {
   @ApiProperty()
   gracePeriod?: number;
   @ApiProperty()
-  repaymentInstallments: number;
+  repaymentInstallments?: number;
   @ApiProperty()
   topUpAmount: number;
   @ApiProperty()

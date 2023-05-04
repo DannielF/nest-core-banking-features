@@ -4,6 +4,7 @@ import { OnboardingClientDTO } from './dto/onboarding-client.dto';
 import { OnboardingService } from './onboarding.service';
 import { OnboardingLoanDTO } from './dto/onboarding-loan.dto';
 import { RescheduleLoanDto } from 'src/transactions/dto/reschule-loan.dto';
+import { RefinanceLoanDto } from 'src/transactions/dto/refinance-loan.dto';
 
 @ApiTags('Standard')
 @Controller('standard')
@@ -148,5 +149,12 @@ export class OnboardingController {
   @Post('loan/reschedule')
   rescheduleLoan(@Body() request: RescheduleLoanDto) {
     return this.onboardingService.rescheduleLoan(request);
+  }
+
+  @ApiOperation({ summary: 'Refinance a loan' })
+  @ApiBody({ required: true, type: RefinanceLoanDto })
+  @Post('loan/refinance')
+  refinanceLoan(@Body() request: RefinanceLoanDto) {
+    return this.onboardingService.refinanceLoan(request);
   }
 }
