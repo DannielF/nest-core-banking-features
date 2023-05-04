@@ -7,6 +7,7 @@ import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
 import { RefinanceLoanDto } from './dto/refinance-loan.dto';
 import { RescheduleLoanDto } from './dto/reschule-loan.dto';
+import { MakeRepaymentDto } from './dto/make-repayment.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -426,6 +427,35 @@ export class TransactionsService {
         }
         return response.json();
       })
+      .then((data) => {
+        if (data.errors) {
+          throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);
+        }
+        return data;
+      })
+      .catch((error) => {
+        throw new HttpException(
+          {
+            error: 'Check your request body or params',
+            mambuError: error.response,
+          },
+          HttpStatus.BAD_REQUEST,
+          { cause: new Error() },
+        );
+      });
+  }
+
+  async makeRepayment(request: MakeRepaymentDto) {
+    const body = {};
+    return await fetch(
+      `${this.headerService.baseUrl}/loans/${request.loanAccountId}/repayment-transactions`,
+      {
+        method: 'POST',
+        headers: this.headerService.headers,
+        body: JSON.stringify(body),
+      },
+    )
+      .then((response) => response.json())
       .then((data) => {
         if (data.errors) {
           throw new HttpException(data.errors, HttpStatus.BAD_REQUEST);

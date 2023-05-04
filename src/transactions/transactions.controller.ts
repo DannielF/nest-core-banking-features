@@ -13,6 +13,7 @@ import {
 import { DisbursementLoanDto } from './dto/make-disbursement-loan.dto';
 import { RefinanceLoanDto } from './dto/refinance-loan.dto';
 import { RescheduleLoanDto } from './dto/reschule-loan.dto';
+import { MakeRepaymentDto } from './dto/make-repayment.dto';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -175,6 +176,13 @@ export class TransactionsController {
   @Post('loans/pay-off')
   payOffLoan(@Body() body: { notes?: string; loanAccountId: string }) {
     return this.transactionsService.payingOffLoan(body);
+  }
+
+  @ApiOperation({ summary: 'Make a repayment on a loan' })
+  @ApiBody({ type: MakeRepaymentDto, required: true })
+  @Post('loans/make-repayment')
+  makeRepayment(@Body() body: MakeRepaymentDto) {
+    return this.transactionsService.makeRepayment(body);
   }
 
   @ApiOperation({ summary: 'Refinance a loan' })
